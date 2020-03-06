@@ -1,0 +1,31 @@
+{
+  "name": "shoe-kart-server",
+  "version": "1.0.0",
+  "description": "express server for shoe kart pwa",
+  "main": "index.js",
+  "author": "Sj",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "node src/server.js",
+    "watch": "babel-watch src/server.js",
+    "seed": "babel-watch seed.js"
+  },
+  "dependencies": {
+    "apollo-server": "^2.11.0",
+    "apollo-server-express": "^2.11.0",
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "graphql": "^14.6.0",
+    "mongodb": "^3.5.4",
+    "mongoose": "^5.9.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "babel-watch": "^7.0.0"
+  }
+}
