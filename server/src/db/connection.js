@@ -1,5 +1,6 @@
-import mongoose from 'mongoose'
+import { connect } from 'mongoose'
 
-mongoose.connect(process.env.DB_URI, {
-  useNewUrlParser: true
+connect(process.env.DB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 })
