@@ -2,13 +2,13 @@
   "name": "shoe-kart-server",
   "version": "1.0.0",
   "description": "express server for shoe kart pwa",
-  "main": "server.js",
+  "main": "index.js",
   "author": "Sj",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "start": "node src/server.js",
-    "watch": "babel-watch src/server.js",
+    "start": "@babel/node src/index.js",
+    "watch": "babel-watch src/index.js",
     "seed": "babel-watch seed.js"
   },
   "dependencies": {
