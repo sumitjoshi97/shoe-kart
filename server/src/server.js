@@ -1,15 +1,16 @@
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 
-import resolvers from './graphql/resolvers'
-import typeDefs from './graphql/typeDefs'
+import getUser from './utils/context'
+import schema from './graphql/modules'
 
 const app = express()
 
 const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req, res }) => ({ req, res })
+  schema,
+  context: async ({ req }) => ({
+    user: await getUser(req)
+  })
 })
 
 apolloServer.applyMiddleware({ app, path: '/graphql' })
