@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express'
 
 const typeDefs = gql`
   extend type Query {
-    currentUser: User 
+    currentUser: User @isAuth(requires: USER)
   }
 
   extend type Mutation {
