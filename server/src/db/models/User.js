@@ -5,7 +5,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, min: 8 },
   profilePic: String,
-  isAdmin: { type: Boolean, default: false }
+  isAdmin: { type: Boolean, default: false },
 })
 
 const User = model('User', userSchema)
