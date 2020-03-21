@@ -9,14 +9,14 @@ const app = express()
 const apolloServer = new ApolloServer({
   schema,
   context: async ({ req }) => ({
-    user: await getUser(req)
-  })
+    user: await getUser(req),
+  }),
 })
 
 apolloServer.applyMiddleware({ app, path: '/graphql' })
 
-app.get('/', (req, res) => res.status(404).json({ "message": "success" }))
+app.get('/', (req, res) => res.status(404).json({ message: 'success' }))
 
-const PORT = 5000 || process.env.PORT
+const PORT = process.env.PORT || 4000
 
 app.listen(PORT, () => console.log(`server running at ${PORT}`))
