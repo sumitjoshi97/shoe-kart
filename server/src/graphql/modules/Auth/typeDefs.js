@@ -8,7 +8,7 @@ const typeDefs = gql`
   extend type Mutation {
     signup(email: String!, password: String!, name: String!): AuthPayload
     signupAdmin(email: String!, password: String!, name: String!): AuthPayload
-    login(email: String!, password: String!): AuthPayload 
+    login(email: String!, password: String!): AuthPayload
   }
 
   type AuthPayload {
@@ -22,7 +22,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     profilePic: String
-  }  
+  }
 `
 
 export default typeDefs

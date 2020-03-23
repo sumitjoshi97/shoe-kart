@@ -8,13 +8,13 @@ const typeDefs = gql`
 
   extend type Mutation {
     addProduct(
-      name: String!, 
-      image: [String!], 
-      category: String!, 
-      size: [Int], 
-      color: [String!], 
-      gender: String!, 
-      description: String!, 
+      name: String!
+      image: [String!]
+      category: String!
+      size: [Int]
+      color: [String!]
+      gender: String!
+      description: String!
       price: Int!
     ): Product @isAuth(requires: ADMIN)
 
@@ -22,7 +22,7 @@ const typeDefs = gql`
   }
 
   type Product {
-    _id: ID!,
+    _id: ID!
     name: String!
     image: [String!]
     category: String
