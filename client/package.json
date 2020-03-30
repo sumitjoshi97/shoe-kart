@@ -1,0 +1,26 @@
+{
+  "name": "shoe-kart-client",
+  "version": "1.0.0",
+  "description": "shop for shoes",
+  "main": "index.jsx",
+  "author": "Sj",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "watch": "parcel --port=3000 src/index.html",
+    "build": "rm -rf dist && parcel build src/index.html"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2"
+  },
+  "alias": {
+    "#src": "./src"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4",
+    "react-hot-loader": "^4.12.20",
+    "sass": "^1.26.3"
+  }
+}
