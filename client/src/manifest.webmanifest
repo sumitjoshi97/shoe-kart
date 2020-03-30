@@ -1,0 +1,15 @@
+{
+  "background_color": "#eeeeee",
+  "description": "Shoe Kart PWA",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "icon/icon128.ico",
+      "sizes": "128x128",
+      "type": "image/ico"
+    }
+  ],
+  "name": "Shoe Kart",
+  "short_name": "shoekart",
+  "start_url": "/index.html"
+}
