@@ -1,5 +1,11 @@
 # node modules
 /node_modules
 
+# cache folder
+/.cache
+
+# distribution folder
+/dist
+
 # environment variables
 .env
