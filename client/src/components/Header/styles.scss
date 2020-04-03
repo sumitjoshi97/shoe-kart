@@ -1,0 +1,41 @@
+.header-container {
+  position: fixed;
+  height: 5.8rem;
+  width: 100%;
+  z-index: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 1400px;
+  margin: auto;
+  background-color: #fff;
+  &__logo {
+  }
+
+  &__nav {
+    ul {
+      display: flex;
+      list-style: none;
+      li {
+        text-transform: uppercase;
+        margin-left: 2rem;
+        font-family: "Oswald";
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__search {
+  }
+
+  &__ctas {
+    ul {
+      display: flex;
+      list-style: none;
+    }
+  }
+}
