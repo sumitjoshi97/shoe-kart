@@ -1,13 +1,17 @@
+import { ApolloProvider } from '@apollo/react-hooks'
 import React from 'react'
 import { render } from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from './App'
+import client from './api/client'
 import './globalStyles.scss'
 
 const app = (
   <Router>
-    <App />
+    <ApolloProvider client={client}>
+      <App />
+    </ApolloProvider>
   </Router>
 )
 
