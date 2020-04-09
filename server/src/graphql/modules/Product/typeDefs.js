@@ -2,8 +2,8 @@ import { gql } from 'apollo-server-express'
 
 const typeDefs = gql`
   extend type Query {
-    products: [Product] @isAuth(requires: USER)
-    product(_id: String!): Product
+    products: [Product]
+    product(productId: String!): Product
   }
 
   extend type Mutation {
