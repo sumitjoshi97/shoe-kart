@@ -1,9 +1,9 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import Header from 'src/components/Header'
-import Home from 'src/pages/Home'
-import Products from 'src/pages/Products'
+import Header from '../components/shared/Header'
+import Home from '../components/Home'
+import Products from '../components/Products'
 
 const App: React.FC = () => (
   <>
