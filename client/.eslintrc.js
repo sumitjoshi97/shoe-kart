@@ -14,8 +14,7 @@ module.exports = {
     },
   },
   rules: {
-    // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-    // e.g. "@typescript-eslint/explicit-function-return-type": "off",
+    'react/jsx-max-props-per-line': [1, { maximum: 2, when: 'always' }],
   },
   settings: {
     react: {
