@@ -12,7 +12,7 @@ const Hero: React.FC = () => (
         reprehenderit aliquid soluta atque minima maxime officia culpa iure!
       </p>
 
-      <Link className="hero__info__shop-btn round-btn" to="/products">
+      <Link className="hero__info__shop-btn round-btn" to="/results">
         Shop now
       </Link>
     </div>
