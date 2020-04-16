@@ -4,9 +4,12 @@ import { IState } from './interface'
 const initialState = {
   products: [],
   activeCategory: '',
-  activeFilterGender: '',
-  activeFilterColors: [],
-  activeFilterSizes: [],
+  filterTypes: ['gender', 'color', 'size'],
+  activeFilters: {
+    gender: [],
+    color: [],
+    size: [],
+  },
 }
 
 const setActiveCategory = (state: IState, category: string) => {
