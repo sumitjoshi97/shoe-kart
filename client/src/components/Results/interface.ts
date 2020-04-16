@@ -26,7 +26,10 @@ export interface ICategory {
 export interface IState {
   products: IProduct[]
   activeCategory: string
-  activeFilterGender: string
-  activeFilterColors: string[]
-  activeFilterSizes: number[]
+  activeFilters: {
+    gender: string[]
+    color: string[]
+    size: number[]
+    [key: string]: (string|number)[]
+  }
 }
