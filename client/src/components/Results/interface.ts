@@ -15,7 +15,7 @@ export interface IProduct {
   gender: string
   description: string
   price: string
-  [key: string]: string[] | number[] | string
+  [key: string]: (string|number)[] | string
 }
 
 export interface ICategory {
