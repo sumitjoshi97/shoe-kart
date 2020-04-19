@@ -20,6 +20,27 @@ const setActiveCategory = (state: IState, category: string) => {
   }
 }
 
+const setActiveFilters = (
+  state: IState,
+  filterType: string,
+  filterOption: string | number,
+) => {
+  const filters = JSON.parse(JSON.stringify(state.activeFilters))
+  let activeFilter = filters[filterType]
+  if (!activeFilter.includes(filterOption)) {
+    activeFilter.push(filterOption)
+  } else if (activeFilter.includes(filterOption)) {
+    activeFilter = activeFilter.filter(
+      (option: string | number) => option !== filterOption,
+    )
+  }
+
+  return {
+    ...state,
+    activeFilters: { ...state.activeFilters, [filterType]: activeFilter },
+  }
+}
+
 const reducer: React.Reducer<any, any> = (state: IState, action: any) => {
   switch (action.type) {
     case 'SET_PRODUCTS':
@@ -27,6 +48,9 @@ const reducer: React.Reducer<any, any> = (state: IState, action: any) => {
 
     case 'SET_ACTIVE_CATEGORY':
       return setActiveCategory(state, action.category)
+
+    case 'SET_ACTIVE_FILTER':
+      return setActiveFilters(state, action.filterType, action.filterOption)
 
     default:
       return state
