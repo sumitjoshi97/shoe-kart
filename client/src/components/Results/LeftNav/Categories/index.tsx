@@ -1,36 +1,25 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
-import {
-  ProductsStateContext,
-  ProductsDispatchContext,
-} from '../../products-context'
 import CategoryItem from './CategoryItem'
 import { ICategory } from '../../interface'
 
-const Categories: React.FC = () => {
-  const { state } = useContext(ProductsStateContext)
-  const { dispatch } = useContext(ProductsDispatchContext)
+interface ICategoryProps {
+  categories: ICategory[]
+  activeCategory: string
+  dispatch: React.Dispatch<any>
+}
 
-  let categories: any = []
-  if (state.products && state.products !== []) {
-    state.products.forEach((product: any) => {
-      const category = categories.find(
-        (category: ICategory) => category.name === product.category,
-      )
-      if (!category) {
-        categories.push({ name: product.category, count: 1 })
-      } else {
-        category.count += 1
-      }
-    })
-  }
+const Categories: React.FC<ICategoryProps> = props => {
+  const { categories, activeCategory, dispatch } = props
 
   const renderCategories = (categories: ICategory[]) => {
     return categories.map((category: ICategory, index: number) => (
       <CategoryItem
         key={index + ' ' + category.name}
         name={category.name}
+        value={category.name}
         count={category.count}
+        isActiveCategory={activeCategory === category.name}
         dispatch={dispatch}
       />
     ))
