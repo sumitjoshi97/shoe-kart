@@ -57,8 +57,8 @@ const reducer: React.Reducer<any, any> = (state: IState, action: any) => {
   }
 }
 
-export const ProductsStateContext = createContext<any>(initialState)
-export const ProductsDispatchContext = createContext<any>(initialState)
+const ProductsStateContext = createContext<any>(initialState)
+const ProductsDispatchContext = createContext<any>(initialState)
 
 const ProductsProvider = (props: any) => {
   const [state, dispatch] = useReducer(reducer, initialState)
@@ -72,4 +72,22 @@ const ProductsProvider = (props: any) => {
   )
 }
 
-export default ProductsProvider
+const useProductState = () => {
+  const context = useContext(ProductsStateContext)
+
+  if (context === undefined) {
+    throw Error('useProductState must be used within ProductsProvider')
+  }
+  return context
+}
+
+const useProductDispatch = () => {
+  const context = useContext(ProductsDispatchContext)
+
+  if (context === undefined) {
+    throw Error('useProductDispatch must be used within ProductsProvider')
+  }
+  return context
+}
+
+export { useProductState, useProductDispatch, ProductsProvider }

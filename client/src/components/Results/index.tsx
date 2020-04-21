@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductsProvider from './products-context'
+import { ProductsProvider } from './products-context'
 
 import LeftNav from './LeftNav'
 import Products from './Products'
