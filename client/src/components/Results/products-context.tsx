@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useReducer, useContext } from 'react'
 import { IState } from './interface'
 
 const initialState = {
@@ -41,6 +41,14 @@ const setActiveFilters = (
   }
 }
 
+const resetProducts = (state: IState) => {
+  return {
+    ...state,
+    activeCategory: initialState.activeCategory,
+    activeFilters: initialState.activeFilters,
+  }
+}
+
 const reducer: React.Reducer<any, any> = (state: IState, action: any) => {
   switch (action.type) {
     case 'SET_PRODUCTS':
@@ -52,6 +60,8 @@ const reducer: React.Reducer<any, any> = (state: IState, action: any) => {
     case 'SET_ACTIVE_FILTER':
       return setActiveFilters(state, action.filterType, action.filterOption)
 
+    case 'RESET_PRODUCTS':
+      return resetProducts(state)
     default:
       return state
   }
