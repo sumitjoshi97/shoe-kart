@@ -1,16 +1,20 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect, ReactNodeArray } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import * as queries from '../queries'
-import {
-  ProductsStateContext,
-  ProductsDispatchContext,
-} from '../products-context'
+import { useProductState, useProductDispatch } from '../products-context'
 import ProductCard from './ProductCard'
 import { IProduct } from '../interface'
 
+interface IActiveFilters {
+  gender: string[]
+  color: string[]
+  size: number[]
+  [key: string]: (string | number)[]
+}
+
 const Products: React.FC = () => {
-  const { state } = useContext(ProductsStateContext)
-  const { dispatch } = useContext(ProductsDispatchContext)
+  const { state } = useProductState()
+  const { dispatch } = useProductDispatch()
   const { data } = useQuery(queries.getAllProducts)
 
   useEffect(() => {
@@ -22,16 +26,42 @@ const Products: React.FC = () => {
     }
   }, [data])
 
-  const renderProducts = (products: IProduct[], category: string) => {
-    let tempProducts = products
-
+  const renderProducts = (
+    products: IProduct[],
+    category: string,
+    filters: IActiveFilters,
+  ) => {
+    let tempProducts: IProduct[] = products
     if (category && category !== '') {
       tempProducts = products.filter(
         (product: IProduct) => product.category === category,
       )
     }
 
-    return tempProducts.map((product: any) => {
+    if (
+      filters &&
+      (filters.gender.length > 0 ||
+        filters.color.length > 0 ||
+        filters.size.length > 0)
+    ) {
+      for (let filterType in filters) {
+        if (filters[filterType].length > 0) {
+          tempProducts = tempProducts.filter((product: IProduct) =>
+            filters[filterType].find((filter: string | number) => {
+              if (Array.isArray(product[filterType])) {
+                return (product[filterType] as ReactNodeArray).find(option => {
+                  return option === filter
+                })
+              } else {
+                return filter === product[filterType]
+              }
+            }),
+          )
+        }
+      }
+    }
+
+    return tempProducts.map((product: IProduct) => {
       const { _id, name, image, price } = product
       return (
         <ProductCard
@@ -47,7 +77,11 @@ const Products: React.FC = () => {
 
   return (
     <div className="products">
-      {renderProducts(state.products, state.activeCategory)}
+      {renderProducts(
+        state.products,
+        state.activeCategory,
+        state.activeFilters,
+      )}
     </div>
   )
 }
