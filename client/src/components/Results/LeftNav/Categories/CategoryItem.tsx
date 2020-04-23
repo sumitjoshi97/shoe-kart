@@ -1,6 +1,16 @@
 import React from 'react'
 
-const CategoryItem: React.FC<any> = ({ name, count, dispatch }) => {
+interface ICategoryItemProps {
+  name: string
+  value: string
+  count: number
+  isActiveCategory: boolean
+  dispatch: React.Dispatch<any>
+}
+
+const CategoryItem: React.FC<ICategoryItemProps> = props => {
+  const { name, value, count, isActiveCategory, dispatch } = props
+
   const setCategory = (category: string) => {
     dispatch({
       type: 'SET_ACTIVE_CATEGORY',
@@ -8,12 +18,24 @@ const CategoryItem: React.FC<any> = ({ name, count, dispatch }) => {
     })
   }
 
+  let categoryStyles = {}
+  if (isActiveCategory) {
+    categoryStyles = {
+      ...categoryStyles,
+      opacity: 0.5,
+    }
+  }
+
   return (
     <div className="category-item">
-      <div className="category-item__name" onClick={() => setCategory(name)}>
+      <div
+        className="category-item__name"
+        style={categoryStyles}
+        onClick={() => setCategory(value)}
+      >
         {name}
+        <span className="category-item__name__count">({count})</span>
       </div>
-      <div className="category-item__count">({count})</div>
     </div>
   )
 }
