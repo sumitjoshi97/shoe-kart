@@ -34,8 +34,23 @@
   position: fixed;
   top: 5.8rem;
   height: calc(100vh - 5.8rem);
-  width: 20rem;
+  width: 16rem;
   margin-left: 4rem;
+
+  &__all-products {
+    display: inline-block;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #2d2d2d;
+    padding-right: 1rem;
+    text-transform: capitalize;
+    cursor: pointer;
+    &__count {
+      font-weight: 1.5rem;
+      letter-spacing: 0.1rem;
+      color: #6d6d6d;
+    }
+  }
 }
 
 .categories {
@@ -54,12 +69,69 @@
     color: #2d2d2d;
     padding-right: 1rem;
     text-transform: capitalize;
+    &__count {
+      font-weight: 1.5rem;
+      letter-spacing: 0.1rem;
+      color: #6d6d6d;
+    }
+  }
+}
+
+.filter {
+  margin-top: 2.5rem;
+  border-top: 1px solid #7c7c7c;
+  &__header {
+    font-size: 1.6rem;
+    text-transform: capitalize;
+    font-weight: 500;
+    margin-top: 0.8rem;
   }
 
-  &__count {
-    display: inline-block;
-    font-weight: 1.5rem;
-    letter-spacing: 0.1rem;
-    color: #6d6d6d;
+  &__options {
+    margin-top: 1rem;
+  }
+}
+
+.filter-item__gender {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+}
+
+.filter-item__color {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid #1f1f1f;
+  padding: 1rem;
+  background-clip: padding-box;
+  margin: 1rem 1rem 0 1rem;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.filter-item__size {
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 3.4rem;
+  text-align: center;
+  vertical-align: middle;
+  width: calc(100% / 3 - 0.6rem);
+  height: 3.4rem;
+  border: 1px solid #a7a7a7;
+  border-radius: 6px;
+  margin: 0.3rem;
+  cursor: pointer;
+}
+
+.left-nav__all-products,
+.category-item__name,
+.filter-item__gender,
+.filter-item__color,
+.filter-item__size {
+  &:hover {
+    opacity: 0.7;
   }
 }
