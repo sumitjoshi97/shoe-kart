@@ -40,6 +40,7 @@ const Products: React.FC = () => {
 
     if (
       filters &&
+      Object.keys(filters).length > 0 &&
       (filters.gender.length > 0 ||
         filters.color.length > 0 ||
         filters.size.length > 0)
