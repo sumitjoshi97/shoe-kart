@@ -3,7 +3,7 @@ import React from 'react'
 import Categories from './Categories'
 import Filter from './Filter'
 import { useProductDispatch, useProductState } from '../products-context'
-import { IProduct, ICategory } from '../interface'
+import { IFilter } from '../interface'
 
 const LeftNav: React.FC<any> = () => {
   const { state } = useProductState()
@@ -14,55 +14,13 @@ const LeftNav: React.FC<any> = () => {
     })
   }
 
-  const getCategories = () => {
-    let categories: ICategory[] = []
-    if (state && state.products && state.products !== []) {
-      state.products.forEach((product: any) => {
-        const category = categories.find(
-          (category: ICategory) => category.name === product.category,
-        )
-        if (!category) {
-          categories.push({ name: product.category, count: 1 })
-        } else {
-          category.count += 1
-        }
-      })
-    }
-    return categories
-  }
-
-  const getFilterOptions = (type: string) => {
-    let filterOptions: (string | number)[] = []
-    if (state.products) {
-      state.products.forEach((product: IProduct) => {
-        const options: (string | number)[] | string = product[type]
-        if (Array.isArray(options)) {
-          options.forEach((option: string | number) => {
-            if (!filterOptions.includes(option)) {
-              filterOptions.push(option)
-            }
-          })
-        } else {
-          if (!filterOptions.includes(options)) {
-            filterOptions.push(options)
-          }
-        }
-
-        if (typeof filterOptions[0] === 'number') {
-          filterOptions.sort((option1: any, option2: any) => option1 - option2)
-        }
-      })
-    }
-    return filterOptions
-  }
-
-  const renderFilters = (filterTypes: string[]) => {
-    return filterTypes.map((filterType: string, index: number) => (
+  const renderFilters = (filters: any, activeFilters: IFilter) => {
+    return Object.keys(filters).map((filterType: any, index: number) => (
       <Filter
         key={index + filterType}
         type={filterType}
-        filterOptions={getFilterOptions}
-        activeFilterOptions={state.activeFilters[filterType]}
+        filterOptions={filters[filterType]}
+        activeFilterOptions={activeFilters[filterType]}
         dispatch={dispatch}
       />
     ))
@@ -79,13 +37,13 @@ const LeftNav: React.FC<any> = () => {
         </div>
         <div className="left-nav__categories">
           <Categories
-            categories={getCategories()}
+            categories={state.categories}
             activeCategory={state.activeCategory}
             dispatch={dispatch}
           />
         </div>
         <div className="left-nav__filters">
-          {renderFilters(state.filterTypes)}
+          {renderFilters(state.filters, state.activeFilters)}
         </div>
       </div>
     </div>

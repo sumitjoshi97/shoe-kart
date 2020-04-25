@@ -1,15 +1,61 @@
 import React, { createContext, useReducer, useContext } from 'react'
-import { IState } from './interface'
+import { IState, IProduct, ICategory } from './interface'
+
+interface category {
+  [key: string]: ICategory
+}
 
 const initialState = {
   products: [],
+  categories: [],
   activeCategory: '',
   filterTypes: ['gender', 'color', 'size'],
-  activeFilters: {
-    gender: [],
-    color: [],
-    size: [],
-  },
+  filters: {},
+  activeFilters: {},
+}
+
+const getFilterOptions = (filterType: string, products: IProduct[]) => {
+  const filterOptions = products
+    .map((product: IProduct) => product[filterType])
+    .flat()
+    .reduce(
+      (options: (string | number)[], value: string | number) =>
+        options.includes(value) ? options : [...options, value],
+      [],
+    )
+  if (typeof filterOptions[0] === 'number') {
+    return filterOptions.sort(
+      (option1: number, option2: number) => option1 - option2,
+    )
+  }
+  return filterOptions
+}
+
+const setProductsStore = (state: IState, products: IProduct[]) => {
+  const { filterTypes } = state
+
+  const categories = Object.values(
+    products
+      .map((product: IProduct) => product.category)
+      .reduce((newCategories: category, category: string) => {
+        !newCategories[category]
+          ? (newCategories[category] = { name: category, count: 1 })
+          : (newCategories[category].count += 1)
+        return newCategories
+      }, {}),
+  )
+
+  const filters = filterTypes.reduce((obj: any, filterType: string) => {
+    obj[filterType] = getFilterOptions(filterType, products)
+    return obj
+  }, {})
+
+  const activeFilters = filterTypes.reduce((obj: any, filterType: string) => {
+    obj[filterType] = []
+    return obj
+  }, {})
+
+  return { ...state, products, categories, filters, activeFilters }
 }
 
 const setActiveCategory = (state: IState, category: string) => {
@@ -42,17 +88,24 @@ const setActiveFilters = (
 }
 
 const resetProducts = (state: IState) => {
+  const activeFilters = state.filterTypes.reduce(
+    (obj: any, filterType: string) => {
+      obj[filterType] = []
+      return obj
+    },
+    {},
+  )
   return {
     ...state,
     activeCategory: initialState.activeCategory,
-    activeFilters: initialState.activeFilters,
+    activeFilters,
   }
 }
 
 const reducer: React.Reducer<any, any> = (state: IState, action: any) => {
   switch (action.type) {
     case 'SET_PRODUCTS':
-      return { ...state, products: action.products }
+      return setProductsStore(state, action.products)
 
     case 'SET_ACTIVE_CATEGORY':
       return setActiveCategory(state, action.category)
