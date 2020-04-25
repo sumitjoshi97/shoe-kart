@@ -23,13 +23,18 @@ export interface ICategory {
   count: number
 }
 
+export interface IFilter {
+  gender: string[]
+  color: string[]
+  size: number[]
+  [key: string]: (string|number)[]
+}
+
 export interface IState {
   products: IProduct[]
+  categories: string[]
   activeCategory: string
-  activeFilters: {
-    gender: string[]
-    color: string[]
-    size: number[]
-    [key: string]: (string|number)[]
-  }
+  filters: IFilter
+  filterTypes: string[]
+  activeFilters: IFilter
 }
