@@ -2,7 +2,10 @@ export interface IProductProps {
   id: string
   name: string
   image: string
+  category: string
+  gender: string
   price: string
+  length: number | undefined
 }
 
 export interface IProduct {
@@ -15,7 +18,7 @@ export interface IProduct {
   gender: string
   description: string
   price: string
-  [key: string]: (string|number)[] | string
+  [key: string]: (string | number)[] | string
 }
 
 export interface ICategory {
@@ -23,18 +26,65 @@ export interface ICategory {
   count: number
 }
 
-export interface IFilter {
+export interface ICategoryMap {
+  [key: string]: ICategory
+}
+
+export interface IFilters {
   gender: string[]
   color: string[]
   size: number[]
-  [key: string]: (string|number)[]
+  [key: string]: (string | number)[]
 }
 
-export interface IState {
-  products: IProduct[]
-  categories: string[]
+export interface ISortOption {
+  title: string
+  value: string
+}
+
+export interface IResultsState {
+  categories: ICategory[]
   activeCategory: string
-  filters: IFilter
+  filters: IFilters | {}
   filterTypes: string[]
-  activeFilters: IFilter
+  activeFilters: IFilters | {}
+  sortOptions: ISortOption[]
+  sortBy: ISortOption | {}
+  showLeftNav: boolean
+}
+
+export interface IResultsHeaderProps {
+  category: string
+  showLeftNav: boolean
+  sortOptions: ISortOption[]
+  sortBy: ISortOption
+  setSortBy: (sortBy: ISortOption) => void
+  toggleLeftNav: () => void
+}
+
+export interface IFilterProps {
+  type: string
+  filterOptions: (string | number)[]
+  activeFilterOptions: (string | number)[]
+  setActiveFilters: (filterType: string, filterOption: string | number) => void
+}
+
+export interface IFilterItemProps {
+  type: string
+  name: string | number
+  isFilterActive: boolean
+  setActiveFilters: (filterType: string, filterOption: string | number) => void
+}
+
+export interface ICategoryProps {
+  categories: ICategory[]
+  activeCategory: string
+  setActiveCategory: (category: string) => void
+}
+
+export interface ICategoryItemProps {
+  name: string
+  count: number
+  isActiveCategory: boolean
+  setActiveCategory: (name: string) => void
 }
