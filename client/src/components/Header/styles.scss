@@ -1,0 +1,139 @@
+//variables
+$line-height: 6.4rem;
+$base-margin: 2.5rem;
+$base-color: #000;
+$border: 1.2px solid $base-color;
+
+//scss
+.header-container {
+  position: fixed;
+  height: $line-height;
+  width: 100%;
+  z-index: 1;
+  background-color: #fff;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  max-width: 1400px;
+  margin: auto;
+  &__logo {
+    font-weight: 800;
+    cursor: pointer;
+    line-height: $line-height;
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+
+  &__nav {
+    position: absolute;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    ul {
+      display: flex;
+      list-style-type: none;
+
+      li {
+        text-transform: capitalize;
+        font-weight: 700;
+        line-height: $line-height;
+        margin-right: $base-margin;
+        cursor: pointer;
+      }
+    }
+  }
+  &__ctas {
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    right: 0;
+    margin-left: auto;
+    height: $line-height;
+    &__search {
+      display: flex;
+    }
+    &__cart {
+      display: flex;
+      align-items: center;
+      line-height: $line-height;
+      &__icon {
+        padding-left: 2px;
+        display: flex;
+      }
+    }
+    &__login {
+      background-color: #000;
+      color: #fff;
+      text-transform: capitalize;
+      height: 4rem;
+      line-height: 4rem;
+      padding: 0 2rem;
+    }
+    &__profile {
+    }
+
+    & > * {
+      margin-left: $base-margin;
+      cursor: pointer;
+    }
+  }
+
+  &__ctas {
+    ul {
+      display: flex;
+      list-style: none;
+    }
+  }
+}
+
+.search-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+  &:hover > &__input {
+    width: 20rem;
+  }
+
+  &__input {
+    font-family: "Quicksand", sans-serif;
+    font-size: inherit;
+    width: 12rem;
+    height: 4.2rem;
+    padding: 0.8rem 1.5rem;
+    outline: none;
+    border: 1.1px solid #000;
+    border-radius: 4px;
+    transition: width 0.2s ease-in-out;
+    &:focus {
+      width: 20rem;
+    }
+  }
+
+  &__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    height: 4.2rem;
+    line-height: 4.2rem;
+    border: 1.1px solid #000;
+    border-left: none;
+    border-radius: 0;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding: 0 1.5rem;
+    background-color: #fff;
+    cursor: pointer;
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+}
