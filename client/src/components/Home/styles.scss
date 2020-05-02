@@ -1,2 +1,44 @@
 .home {
+  background: url("../../assets/images/hero.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero {
+  height: 700px;
+  width: 1400px;
+  margin: auto;
+  position: relative;
+  &__info {
+    position: absolute;
+    bottom: 0;
+    max-width: 1000px;
+    color: #fff;
+    padding-bottom: 4rem;
+    &__header {
+      font-size: 4rem;
+      font-family: "Oswald";
+      text-transform: uppercase;
+    }
+
+    &__text {
+      margin-top: 0.5rem;
+      margin-bottom: 4rem;
+    }
+
+    &__shop-btn {
+      width: 10rem;
+      border: none !important;
+      &__link {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        text-decoration: none;
+        color: #000;
+      }
+    }
+  }
 }

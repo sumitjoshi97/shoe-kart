@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import './styles.scss'
+import Button from '~components/shared/Button'
 
 const Hero: React.FC = () => (
   <div className="hero">
@@ -11,10 +11,11 @@ const Hero: React.FC = () => (
         minus eligendi? Inventore nobis tempore eius sed, ullam fugiat cum rem
         reprehenderit aliquid soluta atque minima maxime officia culpa iure!
       </p>
-
-      <Link className="hero__info__shop-btn round-btn" to="/results">
-        Shop now
-      </Link>
+      <Button className="hero__info__shop-btn white-btn">
+        <Link className="hero__info__shop-btn__link" to="/results">
+          Shop now
+        </Link>
+      </Button>
     </div>
   </div>
 )
