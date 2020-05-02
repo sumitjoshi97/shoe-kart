@@ -6,11 +6,14 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import App from './App'
 import client from './api/client'
 import './globalStyles.scss'
+import { GlobalStateProvider } from '~store'
 
 const app = (
   <Router>
     <ApolloProvider client={client}>
-      <App />
+      <GlobalStateProvider>
+        <App />
+      </GlobalStateProvider>
     </ApolloProvider>
   </Router>
 )
@@ -20,8 +23,3 @@ const app = (
 // }
 
 render(app, document.getElementById('app'))
-
-// react hot module replacement
-// if (module.hot) {
-//   module.hot.accept()
-// }
