@@ -9,10 +9,10 @@ const ImageSlider: React.FC<IImageSliderProps> = ({ images, name }) => {
   const [currentImage, setCurrentImage] = useState(images[0])
 
   const currentOptionStyles = {
-    borderWidth: '2px',
+    borderWidth: '1.2px',
     borderStyle: 'solid',
-    borderColor: '#000',
-    borderRadius: '4px',
+    borderColor: '#111',
+    borderRadius: '2px',
   }
 
   const handleSliderImage = (image: string) => {
