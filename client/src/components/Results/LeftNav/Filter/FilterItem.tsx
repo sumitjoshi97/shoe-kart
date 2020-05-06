@@ -1,51 +1,76 @@
 import React from 'react'
-
-interface IFilterItemProps {
-  type: string
-  name: string | number
-  isFilterActive: boolean
-  dispatch: React.Dispatch<any>
-}
+import { FiCheck } from 'react-icons/fi'
+import { IFilterItemProps } from '../../interface'
 
 const FilterItem: React.FC<IFilterItemProps> = props => {
-  const { type, name, isFilterActive, dispatch } = props
+  const { type, name, isFilterActive, setActiveFilters } = props
 
-  const setFilter = (filterType: string, filterOption: string | number) => {
-    dispatch({
-      type: 'SET_ACTIVE_FILTER',
-      filterType,
-      filterOption,
-    })
+  const isColorValid = (name: string) => {
+    let style = new Option().style
+    style.color = name
+    return style.color == name
   }
 
-  let style = {}
-  if (type === 'color') {
-    style = {
-      backgroundColor: name,
-    }
-  }
-  if (isFilterActive) {
-    style = {
-      ...style,
-      opacity: 0.5,
-    }
-    if (type === 'color') {
-      style = {
-        ...style,
-        opacity: 1,
-        border: '1px solid #afafaf',
-      }
+  const className =
+    type === 'size' || type === 'color' ? `is--${type}` : 'is--default'
+
+  const getFilterItem = () => {
+    switch (type) {
+      case 'color':
+        return (
+          <>
+            <div
+              className="filter-item__color-patch"
+              style={{ backgroundColor: name as string }}
+            >
+              {isFilterActive && (
+                <FiCheck
+                  size="1.6rem"
+                  color={
+                    name !== 'white' && isColorValid(name as string)
+                      ? '#fff'
+                      : '#000'
+                  }
+                />
+              )}
+            </div>
+            <span className="filter-item__name">{name}</span>
+          </>
+        )
+
+      case 'size':
+        return <span className="filter-item__name">{name}</span>
+
+      default:
+        return (
+          <>
+            <div
+              className="filter-item__checkbox"
+              style={{ backgroundColor: isFilterActive ? '#000' : '#fff' }}
+            >
+              {isFilterActive && <FiCheck color="#fff" />}
+            </div>
+            <span className="filter-item__name">{name}</span>
+          </>
+        )
     }
   }
 
   return (
-    <div
-      className={'filter-item__' + type}
-      style={style}
-      onClick={() => setFilter(type, name)}
+    <button
+      className={`filter-item ${className}`}
+      onClick={() => setActiveFilters(type, name)}
+      style={{
+        border:
+          type === 'size'
+            ? isFilterActive
+              ? '1.2px solid #000'
+              : '1px solid #d7d7d7'
+            : '',
+      }}
     >
-      {type !== 'color' && name}
-    </div>
+      {getFilterItem()}
+    </button>
   )
 }
 
