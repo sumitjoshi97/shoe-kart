@@ -1,22 +1,8 @@
 import React from 'react'
-
-interface ICategoryItemProps {
-  name: string
-  value: string
-  count: number
-  isActiveCategory: boolean
-  dispatch: React.Dispatch<any>
-}
+import { ICategoryItemProps } from '../../interface'
 
 const CategoryItem: React.FC<ICategoryItemProps> = props => {
-  const { name, value, count, isActiveCategory, dispatch } = props
-
-  const setCategory = (category: string) => {
-    dispatch({
-      type: 'SET_ACTIVE_CATEGORY',
-      category,
-    })
-  }
+  const { name, count, isActiveCategory } = props
 
   let categoryStyles = {}
   if (isActiveCategory) {
@@ -31,7 +17,7 @@ const CategoryItem: React.FC<ICategoryItemProps> = props => {
       <div
         className="category-item__name"
         style={categoryStyles}
-        onClick={() => setCategory(value)}
+        onClick={() => props.setActiveCategory(name)}
       >
         {name}
         <span className="category-item__name__count">({count})</span>
