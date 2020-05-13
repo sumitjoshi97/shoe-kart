@@ -1,27 +1,25 @@
 import React from 'react'
-
 import Categories from './Categories'
 import Filter from './Filter'
-import { useProductDispatch, useProductState } from '../products-context'
-import { IFilter } from '../interface'
+import { IResultsState, ICategory } from '../interface'
 
-const LeftNav: React.FC<any> = () => {
-  const { state } = useProductState()
-  const { dispatch } = useProductDispatch()
-  const resetProducts = () => {
-    dispatch({
-      type: 'RESET_PRODUCTS',
-    })
-  }
+interface ILeftNavProps {
+  resultsStore: IResultsState
+  setActiveCategory: (category: ICategory) => void
+  setActiveFilters: (filterType: string, filterOption: string | number) => void
+  resetResultsStore: () => void
+}
 
-  const renderFilters = (filters: any, activeFilters: IFilter) => {
-    return Object.keys(filters).map((filterType: any, index: number) => (
+const LeftNav: React.FC<ILeftNavProps> = ({ resultsStore, ...props }) => {
+  const renderFilters = () => {
+    const { filters, activeFilters } = resultsStore
+    return Object.keys(filters).map((filterType: string, index: number) => (
       <Filter
         key={index + filterType}
         type={filterType}
         filterOptions={filters[filterType]}
         activeFilterOptions={activeFilters[filterType]}
-        dispatch={dispatch}
+        setActiveFilters={props.setActiveFilters}
       />
     ))
   }
@@ -29,22 +27,20 @@ const LeftNav: React.FC<any> = () => {
   return (
     <div className="left-nav-container">
       <div className="left-nav">
-        <div className="left-nav__all-products" onClick={() => resetProducts()}>
+        <div
+          className="left-nav__all-products"
+          onClick={props.resetResultsStore}
+        >
           All
-          <span className="left-nav__all-products__count">
-            ({state.products.length})
-          </span>
         </div>
         <div className="left-nav__categories">
           <Categories
-            categories={state.categories}
-            activeCategory={state.activeCategory}
-            dispatch={dispatch}
+            categories={resultsStore.categories}
+            activeCategory={resultsStore.activeCategory}
+            setActiveCategory={props.setActiveCategory}
           />
         </div>
-        <div className="left-nav__filters">
-          {renderFilters(state.filters, state.activeFilters)}
-        </div>
+        <div className="left-nav__filters">{renderFilters()}</div>
       </div>
     </div>
   )
