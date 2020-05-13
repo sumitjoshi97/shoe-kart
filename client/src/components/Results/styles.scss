@@ -1,27 +1,35 @@
 .results {
   display: flex;
   flex-direction: row;
+  max-width: 1400px;
+  width: 1400px;
+  height: 100%;
+  margin: auto;
 }
 
-.product-item {
+.products {
+  position: relative;
+  flex-grow: 1;
+}
+.product-card {
   position: relative;
   display: inline-block;
-  margin-right: 0.5rem;
-  margin-bottom: 4rem;
+  margin: 0 1rem 5rem 1rem;
+  height: auto;
 
   &__link {
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 100;
+    z-index: 1;
   }
 
   &__img {
     display: flex;
     align-items: center;
+    width: 100%;
+    height: auto;
     position: relative;
-    height: 30rem;
-    width: 30rem;
     overflow: hidden;
     img {
       object-fit: contain;
@@ -34,7 +42,29 @@
     cursor: pointer;
   }
   &:hover > &__img img {
-    transform: scale(1.1);
+    transform: scale(1.05);
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1.2rem 1.2rem 1.2rem 0;
+    &__name {
+      text-transform: capitalize;
+    }
+    &__price {
+      &::before {
+        content: "$";
+        padding-right: 4px;
+      }
+    }
+  }
+
+  &__type {
+    color: #9e9e9e;
+    text-transform: capitalize;
+    font-weight: 600;
   }
 }
 
@@ -45,25 +75,21 @@
 }
 
 .left-nav {
-  position: fixed;
-  top: 5.8rem;
-  height: calc(100vh - 5.8rem);
-  width: 16rem;
-  margin-left: 4rem;
+  position: sticky;
+  top: 0;
+  width: 20rem;
+  height: auto;
+  overflow-y: auto;
 
   &__all-products {
     display: inline-block;
     font-size: 1.6rem;
-    font-weight: 500;
+    font-weight: 600;
     color: #2d2d2d;
     padding-right: 1rem;
+    padding-bottom: 0.5rem;
     text-transform: capitalize;
     cursor: pointer;
-    &__count {
-      font-weight: 1.5rem;
-      letter-spacing: 0.1rem;
-      color: #6d6d6d;
-    }
   }
 }
 
@@ -74,18 +100,15 @@
 .category-item {
   display: block;
   font-size: 1.6rem;
-  font-weight: 500;
   padding: 0.5rem 0.5rem 0.5rem 0;
   cursor: pointer;
 
   &__name {
     display: inline-block;
     color: #2d2d2d;
-    padding-right: 1rem;
     text-transform: capitalize;
     &__count {
-      font-weight: 1.5rem;
-      letter-spacing: 0.1rem;
+      padding-left: 0.5rem;
       color: #6d6d6d;
     }
   }
@@ -97,55 +120,180 @@
   &__header {
     font-size: 1.6rem;
     text-transform: capitalize;
-    font-weight: 500;
+    font-weight: 600;
     margin-top: 0.8rem;
   }
 
   &__options {
     margin-top: 1rem;
+    text-transform: capitalize;
+    display: flex;
+    flex-wrap: wrap;
   }
 }
 
-.filter-item__gender {
+.filter-item {
+  display: flex;
+  align-items: center;
   font-size: 1.6rem;
-  font-weight: 500;
-  margin-bottom: 0.8rem;
+  background-color: #fff;
   cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  &__name {
+    text-transform: capitalize;
+    font-size: inherit;
+  }
+
+  &__color-patch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid #d7d7d7;
+    border-radius: 100px;
+  }
+
+  &__checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    width: 2rem;
+    border: 1px solid #000;
+    border-radius: 4px;
+  }
 }
 
-.filter-item__color {
-  display: inline-block;
-  width: 3rem;
-  height: 3rem;
-  border: 1px solid #1f1f1f;
-  padding: 1rem;
-  background-clip: padding-box;
-  margin: 1rem 1rem 0 1rem;
-  border-radius: 100px;
+.is--color {
+  width: 32%;
+  height: 100%;
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  border: none;
+  background-color: #fff;
   cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+
+  .filter-item__name {
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    padding-top: 2px;
+  }
 }
 
-.filter-item__size {
-  display: inline-block;
-  font-size: 1.6rem;
-  font-weight: 500;
-  line-height: 3.4rem;
-  text-align: center;
-  vertical-align: middle;
+.is--size {
+  justify-content: center;
   width: calc(100% / 3 - 0.6rem);
-  height: 3.4rem;
-  border: 1px solid #a7a7a7;
+  height: 3.6rem;
   border-radius: 6px;
   margin: 0.3rem;
-  cursor: pointer;
+  &:hover {
+    border: 1.2px solid #000 !important;
+  }
+  &:focus {
+    outline: none;
+  }
 }
 
-.left-nav__all-products,
-.category-item__name,
-.filter-item__gender,
-.filter-item__color,
-.filter-item__size {
-  &:hover {
-    opacity: 0.7;
+.is--default {
+  width: 100%;
+  border: none;
+  margin-bottom: 1rem;
+  .filter-item__name {
+    margin-left: 1rem;
+  }
+}
+
+.results-header-container {
+  max-width: 1400px;
+  margin: auto;
+  position: sticky;
+  top: 5.8rem;
+  z-index: 10;
+  background-color: #fff;
+}
+
+.results-header-offset {
+  height: 2rem;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 6rem;
+  &__title {
+    flex-grow: 1;
+    font-size: 2.4rem;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  &__nav {
+    display: flex;
+    align-items: center;
+    z-index: 100;
+    &__sort {
+      position: relative;
+      &__btn {
+        span {
+          color: #878787;
+        }
+      }
+      .sort-dropdown {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        top: 100%;
+        right: 0;
+        padding: 2rem;
+        border-bottom-left-radius: 20px;
+        z-index: 2;
+        &__option {
+          margin-bottom: 1rem;
+          text-align: right;
+          background-color: #fff;
+          width: 15rem;
+          right: 0;
+          border: none;
+          white-space: nowrap;
+          font-size: inherit;
+          font-family: inherit;
+          cursor: pointer;
+          &:focus,
+          &:active {
+            outline: none;
+          }
+        }
+      }
+    }
+    &__hide-filters,
+    &__sort__btn {
+      display: flex;
+      align-items: center;
+      font-family: inherit;
+      font-size: 1.6rem;
+      background-color: #fff;
+      border: none;
+      margin-left: 2rem;
+      cursor: pointer;
+      svg {
+        margin-left: 0.5rem;
+      }
+      &:focus {
+        border: none;
+        outline: none;
+      }
+    }
   }
 }
