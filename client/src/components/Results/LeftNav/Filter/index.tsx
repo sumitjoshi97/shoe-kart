@@ -1,17 +1,12 @@
 import React from 'react'
 import FilterItem from './FilterItem'
-
-interface IFilterProps {
-  type: string
-  filterOptions: (string | number)[]
-  activeFilterOptions: (string | number)[]
-  dispatch: React.Dispatch<any>
-}
+import { IFilterProps } from '../../interface'
 
 const Filter: React.FC<IFilterProps> = props => {
-  const { type, filterOptions, activeFilterOptions, dispatch } = props
-  const renderFilter = (options: (string | number)[]) => {
-    return options.map((option: string | number, index: number) => (
+  const { type, filterOptions, activeFilterOptions } = props
+
+  const renderFilter = () => {
+    return filterOptions.map((option: string | number, index: number) => (
       <FilterItem
         key={index + ' ' + option}
         name={option}
@@ -19,7 +14,7 @@ const Filter: React.FC<IFilterProps> = props => {
         isFilterActive={
           activeFilterOptions && activeFilterOptions.includes(option)
         }
-        dispatch={dispatch}
+        setActiveFilters={props.setActiveFilters}
       />
     ))
   }
@@ -27,7 +22,7 @@ const Filter: React.FC<IFilterProps> = props => {
   return (
     <div className="filter">
       <div className="filter__header">{type}</div>
-      <div className="filter__options">{renderFilter(filterOptions)}</div>
+      <div className="filter__options">{renderFilter()}</div>
     </div>
   )
 }
