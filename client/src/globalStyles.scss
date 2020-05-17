@@ -37,22 +37,10 @@ body {
 }
 
 .app-container {
-  padding-top: 5.8rem;
+  padding-top: 6.4rem;
 }
 
-.round-btn {
-  font-size: 1.4rem;
-  padding: 1.2rem 2rem;
-  background-color: #fff;
-  color: #000;
-  border-radius: 100px;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    background-color: rgba(#fff, 0.9);
-  }
-  &:focus,
-  &:active {
-    outline: none;
-  }
+.white-btn {
+  background-color: #fff !important;
+  color: #000 !important;
 }
