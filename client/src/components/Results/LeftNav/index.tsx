@@ -1,14 +1,7 @@
 import React from 'react'
 import Categories from './Categories'
 import Filter from './Filter'
-import { IResultsState, ICategory } from '../interface'
-
-interface ILeftNavProps {
-  resultsStore: IResultsState
-  setActiveCategory: (category: ICategory) => void
-  setActiveFilters: (filterType: string, filterOption: string | number) => void
-  resetResultsStore: () => void
-}
+import { ILeftNavProps, IFilters } from '../interface'
 
 const LeftNav: React.FC<ILeftNavProps> = ({ resultsStore, ...props }) => {
   const renderFilters = () => {
