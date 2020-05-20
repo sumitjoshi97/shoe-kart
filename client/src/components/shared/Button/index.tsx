@@ -1,16 +1,39 @@
 import React from 'react'
 import './styles.scss'
 
-const Button: React.FC<any> = props => {
+interface IButtonProps {
+  type?: string
+  styles?: { [key: string]: number | string }
+  className?: string
+  onClick?: () => any
+}
+
+const Button: React.FC<IButtonProps> = ({
+  type,
+  styles,
+  className,
+  onClick,
+  children,
+}) => {
+  const buttonStyles = {
+    ...styles,
+    backgroundColor: type === 'white' ? '#fff' : '#000',
+    color: type === 'white' ? '#000' : '#fff',
+  }
   return (
     <button
-      className={`button ${props.className ? props.className : ''}`}
-      style={props.style}
-      onClick={props.onClick}
+      className={`button ${className}`}
+      style={buttonStyles}
+      onClick={onClick}
     >
-      {props.children}
+      {children}
     </button>
   )
 }
 
 export default Button
+
+Button.defaultProps = {
+  styles: {},
+  type: 'default',
+}
