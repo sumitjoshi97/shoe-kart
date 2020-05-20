@@ -38,6 +38,21 @@ const Product: React.FC<IProductProps> = props => {
       />
     ))
 
+  const handleCart = () => {
+    if (selectedSize.length === 0) return
+    console.log(selectedSize)
+    addToCart({
+      variables: {
+        productId: props.match.params.productId,
+        size: selectedSize,
+      },
+    })
+  }
+
+  const handleFavorite = () => {
+    console.log('favorite')
+  }
+
   const renderProduct = () => {
     if (data && data.product) {
       const { product } = data
@@ -68,20 +83,13 @@ const Product: React.FC<IProductProps> = props => {
             </div>
 
             <div className="product__info__ctas">
-              <Button
-                onClick={() =>
-                  addToCart({
-                    variables: { productId: props.match.params.productId },
-                  })
-                }
-                styles={{ flex: 1 }}
-              >
+              <Button onClick={handleCart} styles={{ flex: 1 }}>
                 Add to cart
               </Button>
               <Button
-                className="white-btn"
-                onClick={() => console.log('fav')}
-                name="Favorite"
+                type="white"
+                styles={{ marginLeft: '1.6rem' }}
+                onClick={handleFavorite}
               >
                 <FiHeart size="1.6rem" />
               </Button>

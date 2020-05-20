@@ -2,19 +2,28 @@ import React from 'react'
 import Categories from './Categories'
 import Filter from './Filter'
 import { ILeftNavProps, IFilters } from '../interface'
+import isEmpty from '~helpers/isEmpty'
 
 const LeftNav: React.FC<ILeftNavProps> = ({ resultsStore, ...props }) => {
   const renderFilters = () => {
-    const { filters, activeFilters } = resultsStore
-    return Object.keys(filters).map((filterType: string, index: number) => (
-      <Filter
-        key={index + filterType}
-        type={filterType}
-        filterOptions={filters[filterType]}
-        activeFilterOptions={activeFilters[filterType]}
-        setActiveFilters={props.setActiveFilters}
-      />
-    ))
+    if (
+      !isEmpty(resultsStore.filters) &&
+      !isEmpty(resultsStore.activeFilters)
+    ) {
+      const { filters, activeFilters } = resultsStore as {
+        filters: IFilters
+        activeFilters: IFilters
+      }
+      return Object.keys(filters).map((filterType: string, index: number) => (
+        <Filter
+          key={index + filterType}
+          type={filterType}
+          filterOptions={filters[filterType]}
+          activeFilterOptions={activeFilters[filterType]}
+          setActiveFilters={props.setActiveFilters}
+        />
+      ))
+    }
   }
 
   return (

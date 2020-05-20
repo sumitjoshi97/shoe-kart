@@ -58,7 +58,7 @@ const Header: React.FC = () => {
               <FiUser />
             </div>
           ) : (
-            <Button onClick={() => dispatch({ type: 'TOGGLE_AUTH_DIALOG' })}>
+            <Button onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}>
               Login
             </Button>
           )}

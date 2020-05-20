@@ -1,15 +1,10 @@
 import React from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { IFilterItemProps } from '../../interface'
+import isColorValid from '~helpers/isColorValid'
 
 const FilterItem: React.FC<IFilterItemProps> = props => {
   const { type, name, isFilterActive, setActiveFilters } = props
-
-  const isColorValid = (name: string) => {
-    let style = new Option().style
-    style.color = name
-    return style.color == name
-  }
 
   const className =
     type === 'size' || type === 'color' ? `is--${type}` : 'is--default'

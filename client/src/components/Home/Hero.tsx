@@ -11,7 +11,7 @@ const Hero: React.FC = () => (
         minus eligendi? Inventore nobis tempore eius sed, ullam fugiat cum rem
         reprehenderit aliquid soluta atque minima maxime officia culpa iure!
       </p>
-      <Button className="hero__info__shop-btn white-btn">
+      <Button className="hero__info__shop-btn" type="white">
         <Link className="hero__info__shop-btn__link" to="/results">
           Shop now
         </Link>
