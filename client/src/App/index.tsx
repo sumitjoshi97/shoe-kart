@@ -1,27 +1,32 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Auth from '../components/Auth'
 import Header from '../components/Header'
-import Home from '../components/Home'
-import Results from '../components/Results'
-import Product from '../components/Product'
 import { useGlobalState } from '~store'
+import routes from './routes'
 
 const App: React.FC = () => {
-  const {
-    state: { auth },
-  } = useGlobalState()
+  const { state } = useGlobalState()
 
-  console.info('@@app', auth)
+  console.log(state)
+
   return (
     <>
       <Header />
       <div className="app-container">
-        {auth.showAuthDialog && auth.userId === '' && <Auth />}
+        {state.showAuthDialog && state.userId === '' && <Auth />}
         <Switch>
-          <Route path="/product/:productId" component={Product} />
-          <Route path="/results" component={Results} />
-          <Route path="/" component={Home} />
+          {routes.map(route => (
+            <Route
+              key={route.path}
+              path={route.path}
+              render={props => (
+                <Suspense fallback={<div />}>
+                  <route.component {...props} />
+                </Suspense>
+              )}
+            />
+          ))}
         </Switch>
       </div>
     </>
