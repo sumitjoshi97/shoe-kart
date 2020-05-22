@@ -1,21 +1,18 @@
 import React, { useReducer, createContext, useContext } from 'react'
 
-import {
-  initialState as authInitialState,
-  reducer as authReducer,
-} from './reducers/auth'
+import { initialState, reducer } from './reducer'
 
-import combineReducers from './combineReducers'
+// import combineReducers from './combineReducers'
 
-const [rootReducer, initialState] = combineReducers({
-  auth: [authReducer, authInitialState],
-})
+// const [rootReducer, initialState] = combineReducers({
+//   auth: [authReducer, authInitialState],
+// })
 
 const GlobalStateContext = createContext<any>(initialState)
 const GlobalDispatchContext = createContext<any>(initialState)
 
 const GlobalStateProvider = (props: any) => {
-  const [state, dispatch] = useReducer(rootReducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   return (
     <GlobalStateContext.Provider value={{ state }}>

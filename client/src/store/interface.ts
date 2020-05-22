@@ -1,10 +1,16 @@
-import { Reducer } from "react";
+import { Reducer } from 'react'
+
+export interface IGlobalContextState {
+  userId: string
+  showAuthDialog: boolean
+  cartSize: number
+}
 
 export interface Action {
-  type: string;
-  [args: string]: any;
+  type: string
+  [args: string]: any
 }
 
 export interface Reducers {
-  [key: string]: Reducer<any, Action>;
+  [key: string]: Reducer<IGlobalContextState, Action>
 }
