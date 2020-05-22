@@ -53,7 +53,7 @@ const Header: React.FC = () => {
               <FiShoppingCart />
             </div>
           </div>
-          {state.auth.userId !== '' ? (
+          {state.userId !== '' ? (
             <div className="header__profile">
               <FiUser />
             </div>
