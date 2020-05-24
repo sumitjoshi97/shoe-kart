@@ -66,12 +66,12 @@ const Auth: React.FC = () => {
     <div className="auth-container">
       <div
         className="auth-container__toggle"
-        onClick={() => dispatch({ type: 'TOGGLE_AUTH_DIALOG' })}
+        onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}
       />
       <div className="auth">
         <button
           className="auth__toggle-btn"
-          onClick={() => dispatch({ type: 'TOGGLE_AUTH_DIALOG' })}
+          onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}
         >
           <FiX />
         </button>
