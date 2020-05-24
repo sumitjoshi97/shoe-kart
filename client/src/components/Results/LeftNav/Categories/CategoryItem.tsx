@@ -4,20 +4,17 @@ import { ICategoryItemProps } from '../../interface'
 const CategoryItem: React.FC<ICategoryItemProps> = props => {
   const { name, count, isActiveCategory } = props
 
-  let categoryStyles = {}
-  if (isActiveCategory) {
-    categoryStyles = {
-      ...categoryStyles,
-      opacity: 0.5,
-    }
+  const handleCategory = () => {
+    if (isActiveCategory) return
+    props.setActiveCategory(name)
   }
 
   return (
     <div className="category-item">
       <div
         className="category-item__name"
-        style={categoryStyles}
-        onClick={() => props.setActiveCategory(name)}
+        style={{ opacity: isActiveCategory ? 0.5 : 1 }}
+        onClick={handleCategory}
       >
         {name}
         <span className="category-item__name__count">({count})</span>
