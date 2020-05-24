@@ -12,8 +12,7 @@ const Product: React.FC<IProductProps> = props => {
   const { data } = useQuery(queries.getProduct, {
     variables: { productId: props.match.params.productId },
   })
-  const [addToCart] = useMutation(queries.addToCart)
-  const [selectedSize, setSelectedSize] = useState<number[]>([])
+  const [selectedSize, setSelectedSize] = useState<number>(-1)
 
   const handleSize = (size: number) => {
     const sizeIndex = selectedSize.indexOf(size)
@@ -33,7 +32,7 @@ const Product: React.FC<IProductProps> = props => {
       <Size
         key={size}
         size={size}
-        isSizeSelected={selectedSize.includes(size)}
+        isSizeSelected={selectedSize === size}
         selectSize={() => handleSize(size)}
       />
     ))
