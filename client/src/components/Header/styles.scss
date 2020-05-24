@@ -22,7 +22,7 @@ $border: 1.2px solid $base-color;
   max-width: 1400px;
   margin: auto;
   &__logo {
-    font-weight: 800;
+    font-weight: 600;
     cursor: pointer;
     line-height: $line-height;
     a {
@@ -41,7 +41,7 @@ $border: 1.2px solid $base-color;
 
       li {
         text-transform: capitalize;
-        font-weight: 700;
+        font-weight: 600;
         line-height: $line-height;
         margin-right: $base-margin;
         cursor: pointer;
