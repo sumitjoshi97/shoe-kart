@@ -7,7 +7,8 @@ const Size: React.FC<ISizeProps> = ({ size, isSizeSelected, selectSize }) => {
       className="size"
       onClick={selectSize}
       style={{
-        border: isSizeSelected ? '1.2px solid #000' : '1px solid #c0c0c0',
+        background: isSizeSelected ? '#000' : '#fff',
+        color: isSizeSelected ? '#fff' : '#000',
       }}
     >
       {size}
