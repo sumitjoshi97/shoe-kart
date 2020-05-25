@@ -62,6 +62,13 @@ export interface IResultsHeaderProps {
   toggleLeftNav: () => void
 }
 
+export interface ILeftNavProps {
+  resultsStore: IResultsState
+  setActiveCategory: (name: string) => void
+  setActiveFilters: (filterType: string, filterOption: string | number) => void
+  resetResultsStore: () => void
+}
+
 export interface IFilterProps {
   type: string
   filterOptions: (string | number)[]
