@@ -8,7 +8,14 @@ export const initialState = {
 }
 
 const addUser = (state: IGlobalContextState, user: string, token: string) => {
-  localStorage.setItem('token', token)
+  if (!localStorage.getItem('credentials')) {
+    const credentials = {
+      user_id: user,
+      access_token: token,
+      token_type: 'bearer',
+    }
+    localStorage.setItem('credentials', JSON.stringify(credentials))
+  }
   return { ...state, userId: user }
 }
 
