@@ -1,12 +1,21 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Auth from '../components/Auth'
 import Header from '../components/Header'
-import { useGlobalState } from '~store'
+import { useGlobalState, useGlobalDispatch } from '~store'
 import routes from './routes'
 
 const App: React.FC = () => {
   const { state } = useGlobalState()
+  const { dispatch } = useGlobalDispatch()
+
+  useEffect(() => {
+    const credentials = localStorage.getItem('credentials')
+    if (credentials) {
+      const userId = JSON.parse(credentials).user_id
+      dispatch({ type: 'ADD_USER', user: userId })
+    }
+  }, [])
 
   console.log(state)
 
