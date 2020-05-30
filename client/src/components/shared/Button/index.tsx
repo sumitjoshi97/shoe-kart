@@ -5,7 +5,7 @@ interface IButtonProps {
   type?: string
   styles?: { [key: string]: number | string }
   className?: string
-  onClick?: () => any
+  onClick?: (arg: any) => any
 }
 
 const Button: React.FC<IButtonProps> = ({
@@ -36,4 +36,5 @@ export default Button
 Button.defaultProps = {
   styles: {},
   type: 'default',
+  className: '',
 }
