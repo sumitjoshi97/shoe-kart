@@ -59,13 +59,20 @@ $border: 1.2px solid $base-color;
       display: flex;
     }
     &__cart {
+      line-height: $line-height;
+      &__link {
       display: flex;
       align-items: center;
-      line-height: $line-height;
+        text-decoration: none;
+        color: #000;
       &__icon {
         padding-left: 2px;
         display: flex;
       }
+    }
+    }
+    &__profile {
+      line-height: $line-height;
     }
     &__login {
       background-color: #000;
