@@ -48,10 +48,12 @@ const Header: React.FC = () => {
             />
           </div>
           <div className="header__ctas__cart">
+            <Link to="/cart" className="header__ctas__cart__link">
             Cart
-            <div className="header__ctas__cart__icon">
+              <div className="header__ctas__cart__link__icon">
               <FiShoppingCart />
             </div>
+            </Link>
           </div>
           {state.userId !== '' ? (
             <div className="header__profile">
