@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const getProduct = gql`
+export const GET_PRODUCT = gql`
   query($productId: String!) {
     product(productId: $productId) {
       _id
