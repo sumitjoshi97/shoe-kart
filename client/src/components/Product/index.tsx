@@ -5,26 +5,22 @@ import Size from './Size'
 import Button from '~components/shared/Button'
 import { IProductProps } from './interface'
 import * as queries from './queries'
+import { ADD_TO_CART } from '../Cart/queries'
 import './styles.scss'
 import { FiHeart } from 'react-icons/fi'
 
 const Product: React.FC<IProductProps> = props => {
-  const { data } = useQuery(queries.getProduct, {
+  const [sizeError, setSizeError] = useState<boolean>(false)
+
+  const { data } = useQuery(queries.GET_PRODUCT, {
     variables: { productId: props.match.params.productId },
   })
+  const [addItemToCart] = useMutation(ADD_TO_CART)
   const [selectedSize, setSelectedSize] = useState<number>(-1)
 
   const handleSize = (size: number) => {
-    const sizeIndex = selectedSize.indexOf(size)
-    if (sizeIndex > -1) {
-      setSelectedSize(
-        selectedSize
-          .slice(0, sizeIndex)
-          .concat(selectedSize.slice(sizeIndex + 1)),
-      )
-    } else {
-      setSelectedSize([...selectedSize, size])
-    }
+    sizeError === true && setSizeError(false)
+    setSelectedSize(size !== selectedSize ? size : -1)
   }
 
   const renderSizes = (sizes: number[]) =>
@@ -38,12 +34,15 @@ const Product: React.FC<IProductProps> = props => {
     ))
 
   const handleCart = () => {
-    if (selectedSize.length === 0) return
-    console.log(selectedSize)
-    addToCart({
+    if (selectedSize === -1) {
+      setSizeError(true)
+      return
+    }
+
+    addItemToCart({
       variables: {
         productId: props.match.params.productId,
-        size: selectedSize,
+        selectedSize: selectedSize,
       },
     })
   }
@@ -72,8 +71,13 @@ const Product: React.FC<IProductProps> = props => {
               <div />$ {product.price}
             </div>
             <div className="product__info__sizes">
-              <span>select size:</span>
-              <div className="product__info__sizes__selection">
+              <span style={{ color: sizeError ? '#d43f21' : '#000' }}>
+                select size
+              </span>
+              <div
+                className="product__info__sizes__selection"
+                style={{ boxShadow: sizeError ? '0 0 0 1px #d43f21' : '' }}
+              >
                 {renderSizes(product.size)}
               </div>
             </div>
