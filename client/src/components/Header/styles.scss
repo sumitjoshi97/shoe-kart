@@ -61,15 +61,15 @@ $border: 1.2px solid $base-color;
     &__cart {
       line-height: $line-height;
       &__link {
-      display: flex;
-      align-items: center;
+        display: flex;
+        align-items: center;
         text-decoration: none;
         color: #000;
-      &__icon {
-        padding-left: 2px;
-        display: flex;
+        &__icon {
+          padding-left: 2px;
+          display: flex;
+        }
       }
-    }
     }
     &__profile {
       line-height: $line-height;
@@ -81,8 +81,6 @@ $border: 1.2px solid $base-color;
       height: 4rem;
       line-height: 4rem;
       padding: 0 2rem;
-    }
-    &__profile {
     }
 
     & > * {
@@ -141,6 +139,52 @@ $border: 1.2px solid $base-color;
     &:focus,
     &:active {
       outline: none;
+    }
+  }
+}
+
+.account {
+  position: relative;
+  line-height: inherit;
+  span {
+    text-transform: capitalize;
+  }
+  &__options {
+    position: absolute;
+    top: 100%;
+    background-color: #fff;
+    border-top: 1px solid #000;
+    padding: 1.5rem 4rem;
+    left: -50%;
+    &__list {
+      display: flex;
+      flex-direction: column;
+      &__option {
+        list-style-type: none;
+        line-height: 4rem;
+
+        a {
+          color: rgb(0, 0, 0);
+          text-transform: capitalize;
+          text-decoration: none;
+        }
+        button {
+          color: #000;
+          text-transform: capitalize;
+          font-size: inherit;
+          font-family: inherit;
+          border: none;
+          background-color: #fff;
+          cursor: pointer;
+          &:active,
+          &:focus {
+            outline: none;
+          }
+        }
+        & > *:hover {
+          color: #a0a0a0;
+        }
+      }
     }
   }
 }

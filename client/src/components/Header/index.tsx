@@ -5,6 +5,8 @@ import SearchInput from './SearchInput'
 import { Link } from 'react-router-dom'
 import { useGlobalDispatch, useGlobalState } from '~store'
 import Button from '~components/shared/Button'
+import isEmpty from '~helpers/isEmpty'
+import Account from './Account'
 
 const Header: React.FC = () => {
   const [searchText, setSearchText] = useState<string>('')
@@ -49,15 +51,15 @@ const Header: React.FC = () => {
           </div>
           <div className="header__ctas__cart">
             <Link to="/cart" className="header__ctas__cart__link">
-            Cart
+              Cart
               <div className="header__ctas__cart__link__icon">
-              <FiShoppingCart />
-            </div>
+                <FiShoppingCart />
+              </div>
             </Link>
           </div>
-          {state.userId !== '' ? (
-            <div className="header__profile">
-              <FiUser />
+          {!isEmpty(state.userId) ? (
+            <div className="header__ctas__profile">
+              <Account />
             </div>
           ) : (
             <Button onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}>
