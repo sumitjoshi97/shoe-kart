@@ -8,7 +8,7 @@ const client = new ApolloClient({
       const { token_type, access_token } = JSON.parse(credentials)
       operation.setContext({
         headers: {
-          authorization: token_type + access_token,
+          authorization: `${token_type} ${access_token}`,
         },
       })
     }
