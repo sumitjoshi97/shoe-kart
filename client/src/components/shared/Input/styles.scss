@@ -1,0 +1,39 @@
+.input {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  filter: none;
+  background-color: rgba(#000, 1);
+  &__field {
+    font-size: 1.4rem;
+    font-family: "Open Sans";
+    width: 100%;
+    padding: 2.8rem 1rem 0.8rem;
+    outline: none;
+    border: none;
+    border-bottom: 1.1px solid #000;
+    border-radius: 0;
+    transition: border 0.25s ease-in;
+    &:focus,
+    &:active {
+      border-color: #3b6fff;
+    }
+  }
+
+  &__label {
+    position: absolute;
+    padding-left: 1rem;
+    color: #666666;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    transform-origin: left;
+    transform: translateY(2.5rem) scale(1);
+    transition: all 0.3s;
+    text-transform: capitalize;
+  }
+
+  &__field:focus + &__label {
+    transform: translateY(0.7rem) scale(0.75);
+  }
+}
