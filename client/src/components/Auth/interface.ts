@@ -4,10 +4,3 @@ export interface IFormInput {
   password: string
   [key: string]: string | undefined
 }
-
-export interface IFormInputProps {
-  type: string
-  label: string
-  inputValue: string
-  handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
