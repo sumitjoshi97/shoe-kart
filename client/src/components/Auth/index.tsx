@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useMutation } from 'react-apollo'
 import * as queries from './queries'
-import FormInput from './FormInput'
+import Input from '../shared/Input'
 import './styles.scss'
 import { IFormInput } from './interface'
 import { useGlobalDispatch } from '~store'
 import { FiX } from 'react-icons/fi'
+import Button from '~components/shared/Button'
 
 const Auth: React.FC = () => {
   const formTypes = {
@@ -81,30 +82,41 @@ const Auth: React.FC = () => {
           onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
             handleFormSubmit(e)
           }
+          autoComplete="off"
         >
           {formType === formTypes.signup ? (
-            <FormInput
+            <Input
               type="text"
               label="name"
+              name="name"
               inputValue={formInput['name']}
               handleInput={handleFormInput}
             />
           ) : null}
-          <FormInput
+          <Input
             type="email"
             label="email"
+            name="email"
             inputValue={formInput['email']}
             handleInput={handleFormInput}
           />
-          <FormInput
+          <Input
             type="password"
             label="password"
+            name="password"
             inputValue={formInput['password']}
             handleInput={handleFormInput}
           />
-          <button type="submit" className="auth__form__submit-btn">
+          <Button
+            styles={{
+              flex: 1,
+              textTransform: 'capitalize',
+              marginTop: '2.4rem',
+            }}
+            type="submit"
+          >
             {formType}
-          </button>
+          </Button>
         </form>
         <div className="auth__footer">
           {formType === formTypes.login ? (
