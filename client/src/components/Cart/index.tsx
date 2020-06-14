@@ -3,6 +3,10 @@ import { useQuery, useMutation } from 'react-apollo'
 import * as queries from './queries'
 import CartItem from './CartItem'
 import './styles.scss'
+import OrderSummary from '../shared/CartSummary'
+import Button from '~components/shared/Button'
+import { Link } from 'react-router-dom'
+import { FiArrowRight } from 'react-icons/fi'
 
 const Cart = () => {
   const { data } = useQuery(queries.GET_CART)
@@ -66,12 +70,30 @@ const Cart = () => {
     }
   }
   return (
-    <div className="cart-container">
       <div className="cart">
-        <h2 className="cart__header">My Bag</h2>
-        <div className="cart__items">{renderCartItems()}</div>
+      <div className="cart__items">
+        <h2 className="cart__items__header">My Bag</h2>
+        <div className="cart__items__list">{renderCartItems()}</div>
       </div>
-      <div className="cart-summary"></div>
+
+      <div className="cart__summary">
+        <OrderSummary />
+
+        <div className="cart__summary__checkout">
+          <Button styles={{ flex: 1 }}>
+            <Link to="/checkout" className="cart__summary__checkout__link">
+              Checkout
+              <FiArrowRight style={{ marginLeft: '0.5rem' }} />
+            </Link>
+          </Button>
+        </div>
+        <div className="cart__summary__cont-shopping">
+          <Link to="/results" className="cart__summary__cont-shopping__link">
+            Add more to Cart
+            <FiArrowRight style={{ marginLeft: '0.5rem' }} />
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }
