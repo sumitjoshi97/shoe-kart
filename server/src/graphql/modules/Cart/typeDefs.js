@@ -14,6 +14,7 @@ const typeDefs = gql`
 			quantity: Int
 			selectedSize: Int
 		): Cart! @isAuth(requires: USER)
+		clearCart(cartItemId: ID!): Cart! @isAuth(requires: USER)
 	}
 
 	type CartItem {

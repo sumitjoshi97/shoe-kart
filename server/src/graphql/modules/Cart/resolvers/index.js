@@ -3,9 +3,9 @@ import * as Mutation from './Mutation'
 import * as Query from './Query'
 
 const resolvers = {
-  Query,
-  Mutation,
-  Cart
+	Query,
+	Mutation,
+	Cart,
 }
 
 export default resolvers
