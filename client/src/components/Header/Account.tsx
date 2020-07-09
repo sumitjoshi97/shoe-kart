@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
 import { FiUser } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import { useGlobalDispatch } from '~store'
 
-const Account = () => {
+const Account: React.FC<any> = props => {
+  const { dispatch } = useGlobalDispatch()
   const [showAccountOptions, setShowAccountOptions] = useState<boolean>(false)
 
   const handleLogout = () => {
-    console.log('logout')
+    dispatch({ type: 'REMOVE_USER' })
+    props.handleLogout()
   }
 
   const accountOptions = (
@@ -27,6 +30,7 @@ const Account = () => {
       </ul>
     </div>
   )
+
   return (
     <div
       className="account"
