@@ -4,6 +4,10 @@ import Auth from '../components/Auth'
 import Header from '../components/Header'
 import { useGlobalState, useGlobalDispatch } from '~store'
 import routes from './routes'
+import isEmpty from '~helpers/isEmpty'
+import { ADD_TO_CART } from '../components/Cart/queries'
+import { getLocalCart } from '~helpers/localCart'
+import { useMutation } from '@apollo/react-hooks'
 
 const App: React.FC = () => {
   const { state } = useGlobalState()
@@ -17,7 +21,31 @@ const App: React.FC = () => {
     }
   }, [])
 
-  console.log(state)
+  useEffect(() => {
+    const cart = getLocalCart()
+    if (cart && isEmpty(state.userId)) {
+      const parsedCart = JSON.parse(cart)
+      if (!isEmpty(parsedCart)) {
+        dispatch({ type: 'INIT_CART', cart: parsedCart })
+        dispatch({ type: 'UPDATE_CART_INFO', cart: parsedCart })
+      }
+    }
+  }, [])
+
+  const [addToCart] = useMutation(ADD_TO_CART)
+
+  if (!isEmpty(state.userId) && !isEmpty(state.cart)) {
+    Object.values(state.cart).forEach((cartItem: any) =>
+      addToCart({
+        variables: {
+          productId: cartItem.product._id,
+          quantity: cartItem.quantity,
+          selectedSize: cartItem.selectedSize,
+        },
+      }),
+    )
+    dispatch({ type: 'CLEAR_CART' })
+  }
 
   return (
     <>
