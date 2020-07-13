@@ -1,14 +1,14 @@
-export interface ICartItemProps {
-  id: string
-  productId: string
-  name: string
-  image: string
-  price: number
-  size: number
-  gender: string
-  category: string
+import { IProduct } from '~components/Results/interface'
+
+export interface ICartItem {
+  _id: string
+  product: IProduct
   quantity: number
   selectedSize: number
+}
+
+export interface ICartItemProps {
+  cartItem: ICartItem
   updateCartItem: (
     cartItemId: string,
     quantity: number,
