@@ -2,12 +2,6 @@ import React, { useReducer, createContext, useContext } from 'react'
 
 import { initialState, reducer } from './reducer'
 
-// import combineReducers from './combineReducers'
-
-// const [rootReducer, initialState] = combineReducers({
-//   auth: [authReducer, authInitialState],
-// })
-
 const GlobalStateContext = createContext<any>(initialState)
 const GlobalDispatchContext = createContext<any>(initialState)
 
