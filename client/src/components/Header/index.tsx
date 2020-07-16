@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
-import { FiShoppingCart, FiUser } from 'react-icons/fi'
+import { FiShoppingCart } from 'react-icons/fi'
 import './styles.scss'
 import SearchInput from './SearchInput'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { useGlobalDispatch, useGlobalState } from '~store'
 import Button from '~components/shared/Button'
 import isEmpty from '~helpers/isEmpty'
 import Account from './Account'
+import { IHeaderProps } from './interface'
 
-const Header: React.FC = () => {
+const Header: React.FC<IHeaderProps> = props => {
   const [searchText, setSearchText] = useState<string>('')
 
   const { state } = useGlobalState()
@@ -23,6 +24,10 @@ const Header: React.FC = () => {
       console.log(searchText)
       setSearchText('')
     }
+  }
+
+  const handleLogout = () => {
+    props.history.push('/')
   }
 
   return (
@@ -59,7 +64,7 @@ const Header: React.FC = () => {
           </div>
           {!isEmpty(state.userId) ? (
             <div className="header__ctas__profile">
-              <Account />
+              <Account handleLogout={handleLogout} />
             </div>
           ) : (
             <Button onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}>
@@ -72,4 +77,4 @@ const Header: React.FC = () => {
   )
 }
 
-export default Header
+export default withRouter(Header)
