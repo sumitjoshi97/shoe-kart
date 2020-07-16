@@ -1,87 +1,38 @@
 import React from 'react'
-import { useQuery, useMutation } from 'react-apollo'
-import * as queries from './queries'
 import CartItem from './CartItem'
 import './styles.scss'
-import { useGlobalState, useGlobalDispatch } from '~store'
 import isEmpty from '~helpers/isEmpty'
-import { getLocalCart } from '~helpers/localCart'
 import { ICartItem } from './interface'
-import OrderSummary from '../shared/CartSummary'
+import CartSummary from '../shared/CartSummary'
 import Button from '~components/shared/Button'
 import { Link } from 'react-router-dom'
 import { FiArrowRight } from 'react-icons/fi'
+import withCart from '~hocs/cart/withCart'
 
-const Cart = () => {
-  const { state } = useGlobalState()
-  const { dispatch } = useGlobalDispatch()
-
-  const { data } = useQuery(queries.GET_CART, { fetchPolicy: 'network-only' })
-  const [updateCartItem] = useMutation(queries.UPDATE_CART_ITEM)
-  const [removeCartItem] = useMutation(queries.REMOVE_FROM_CART)
-
+const Cart = (props: any) => {
   const handleCartItemUpdate = (
     cartItemId: string,
     quantity: number,
     selectedSize: number,
   ) => {
-    if (isEmpty(state.userId) && !isEmpty(state.cart)) {
-      dispatch({ type: 'UPDATE_CART_ITEM', cartItemId, quantity, selectedSize })
-      dispatch({ type: 'UPDATE_CART_INFO', cart: state.cart })
-    }
-    if (!isEmpty(state.userId)) {
-      updateCartItem({
-        variables: { cartItemId, quantity, selectedSize },
-        refetchQueries: [{ query: queries.GET_CART }],
-      })
-      dispatch({ type: 'UPDATE_CART_INFO', cart: data.cart.items })
-    }
+    props.updateCartItem(cartItemId, quantity, selectedSize)
   }
 
   const handleRemoveCartItem = (cartItemId: string) => {
-    if (isEmpty(state.userId)) {
-      dispatch({ type: 'REMOVE_FROM_CART', cartItemId })
-      dispatch({ type: 'UPDATE_CART_INFO', cart: data.cart.items })
-    }
-    if (!isEmpty(state.userId)) {
-      removeCartItem({
-        variables: { cartItemId },
-        refetchQueries: [{ query: queries.GET_CART }],
-      })
-      dispatch({ type: 'UPDATE_CART_INFO', cart: data.cart.items })
-    }
-  }
-
-  const getCartItems = () => {
-    if (data && data.cart && !isEmpty(state.userId)) {
-      return data.cart.items
-    }
-
-    if (isEmpty(state.userId) && !isEmpty(state.cart)) {
-      return Object.values(state.cart)
-    }
-
-    const cart = getLocalCart()
-    if (cart && isEmpty(state.userId) && isEmpty(state.cart)) {
-      const parsedCart = JSON.parse(cart)
-      if (!isEmpty(parsedCart)) {
-        dispatch({ type: 'INIT_CART', cart: parsedCart })
-        return Object.values(parsedCart)
-      }
-    }
-
-    return []
+    props.removeCartItem(cartItemId)
   }
 
   const renderCartItems = () => {
-    return getCartItems().map((cartItem: ICartItem) => (
-      <CartItem
-        key={cartItem._id}
-        cartItem={cartItem}
-        updateCartItem={handleCartItemUpdate}
-        removeCartItem={handleRemoveCartItem}
-      />
-    ))
+    if (!isEmpty(props.cart.items)) {
+      return props.cart.items.map((cartItem: ICartItem) => (
+        <CartItem
+          key={cartItem._id}
+          cartItem={cartItem}
+          updateCartItem={handleCartItemUpdate}
+          removeCartItem={handleRemoveCartItem}
+        />
+      ))
+    }
   }
 
   return (
@@ -92,7 +43,7 @@ const Cart = () => {
       </div>
 
       <div className="cart__summary">
-        <OrderSummary />
+        <CartSummary />
 
         <div className="cart__summary__checkout">
           <Button styles={{ flex: 1 }}>
@@ -113,4 +64,4 @@ const Cart = () => {
   )
 }
 
-export default Cart
+export default withCart(Cart)
