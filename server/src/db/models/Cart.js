@@ -1,14 +1,19 @@
 import mongoose, { model, Schema } from 'mongoose'
 
 const cartSchema = new Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  items: [
-    {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-      quantity: { type: Number, default: 1, min: 1, max: 10},
-      selectedSize: { type: Number, required: true },
-    },
-  ],
+	user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+	price: { type: Number, required: true, min: 0, default: 0 },
+	quantity: { type: Number, required: true, min: 0, default: 0 },
+	items: [
+		{
+			product: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Product',
+			},
+			quantity: { type: Number, default: 1, min: 1, max: 10 },
+			selectedSize: { type: Number, required: true },
+		},
+	],
 })
 
 const Cart = model('Cart', cartSchema)
