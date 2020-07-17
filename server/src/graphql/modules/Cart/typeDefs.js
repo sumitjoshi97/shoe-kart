@@ -6,8 +6,11 @@ const typeDefs = gql`
 	}
 
 	extend type Mutation {
-		addToCart(productId: ID!, selectedSize: Int!): Cart
-			@isAuth(requires: USER)
+		addToCart(
+			productId: ID!
+			selectedSize: Int!
+			quantity: Int
+		): Cart @isAuth(requires: USER)
 		removeFromCart(cartItemId: ID!): Cart @isAuth(requires: USER)
 		updateCartItem(
 			cartItemId: ID!
@@ -28,6 +31,8 @@ const typeDefs = gql`
 		_id: ID!
 		user: User!
 		items: [CartItem]
+		price: Int!
+		quantity: Int!
 	}
 `
 
