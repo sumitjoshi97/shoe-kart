@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Dropdown from '../shared/Dropdown'
-import Button from '~components/shared/Button'
+import Dropdown from '../Dropdown'
+import Button from '../Button'
 import { ICartItemProps } from './interface'
 
 const defaultQuantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -64,7 +64,9 @@ const CartItem: React.FC<ICartItemProps> = props => {
           <Button onClick={() => removeCartItem(cartItemId)}>Remove</Button>
         </div>
       </div>
-      <div className="cart-item__price">${product.price}</div>
+      <div className="cart-item__price">
+        ${parseInt(product.price) * quantity}
+      </div>
     </div>
   )
 }

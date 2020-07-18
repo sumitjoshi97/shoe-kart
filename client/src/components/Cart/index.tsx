@@ -1,45 +1,16 @@
 import React from 'react'
-import CartItem from './CartItem'
-import './styles.scss'
-import isEmpty from '~helpers/isEmpty'
-import { ICartItem } from './interface'
-import CartSummary from '../shared/CartSummary'
 import Button from '~components/shared/Button'
-import { Link } from 'react-router-dom'
+import CartSummary from '../shared/CartSummary'
+import CartItems from '~components/shared/CartItems'
 import { FiArrowRight } from 'react-icons/fi'
-import withCart from '~hocs/cart/withCart'
+import { Link } from 'react-router-dom'
+import './styles.scss'
 
-const Cart = (props: any) => {
-  const handleCartItemUpdate = (
-    cartItemId: string,
-    quantity: number,
-    selectedSize: number,
-  ) => {
-    props.updateCartItem(cartItemId, quantity, selectedSize)
-  }
-
-  const handleRemoveCartItem = (cartItemId: string) => {
-    props.removeCartItem(cartItemId)
-  }
-
-  const renderCartItems = () => {
-    if (!isEmpty(props.cart.items)) {
-      return props.cart.items.map((cartItem: ICartItem) => (
-        <CartItem
-          key={cartItem._id}
-          cartItem={cartItem}
-          updateCartItem={handleCartItemUpdate}
-          removeCartItem={handleRemoveCartItem}
-        />
-      ))
-    }
-  }
-
+const Cart = () => {
   return (
     <div className="cart">
       <div className="cart__items">
-        <h2 className="cart__items__header">My Bag</h2>
-        <div className="cart__items__list">{renderCartItems()}</div>
+        <CartItems header="my bag" />
       </div>
 
       <div className="cart__summary">
@@ -64,4 +35,4 @@ const Cart = (props: any) => {
   )
 }
 
-export default withCart(Cart)
+export default Cart
