@@ -8,13 +8,11 @@ import Button from '~components/shared/Button'
 import isEmpty from '~helpers/isEmpty'
 import Account from './Account'
 import { IHeaderProps } from './interface'
+import withCart from '~hocs/cart/withCart'
 
 const Header: React.FC<IHeaderProps> = props => {
   const [searchText, setSearchText] = useState<string>('')
-
-  const { state } = useGlobalState()
-  const { dispatch } = useGlobalDispatch()
-
+  const { cart } = props
   const handleSearchInput = (e: any) => {
     setSearchText(e.target.value)
   }
@@ -59,6 +57,11 @@ const Header: React.FC<IHeaderProps> = props => {
               Cart
               <div className="header__ctas__cart__link__icon">
                 <FiShoppingCart />
+                {cart.quantity > 0 && (
+                  <span className="header__ctas__cart__link__icon__count">
+                    {cart.quantity}
+                  </span>
+                )}
               </div>
             </Link>
           </div>
@@ -77,4 +80,4 @@ const Header: React.FC<IHeaderProps> = props => {
   )
 }
 
-export default withRouter(Header)
+export default withRouter(withCart(Header))
