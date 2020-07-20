@@ -1,21 +1,20 @@
 import React, { useState } from 'react'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
 import ImageSlider from './ImageSlider'
 import Size from './Size'
 import Button from '~components/shared/Button'
-import { IProductProps } from './interface'
 import * as queries from './queries'
-import { ADD_TO_CART } from '../Cart/queries'
 import './styles.scss'
 import { FiHeart } from 'react-icons/fi'
+import withCart from '../../hocs/cart/withCart'
 
-const Product: React.FC<IProductProps> = props => {
+const Product: React.FC<any> = props => {
   const [sizeError, setSizeError] = useState<boolean>(false)
 
   const { data } = useQuery(queries.GET_PRODUCT, {
     variables: { productId: props.match.params.productId },
   })
-  const [addItemToCart] = useMutation(ADD_TO_CART)
+
   const [selectedSize, setSelectedSize] = useState<number>(-1)
 
   const handleSize = (size: number) => {
@@ -39,12 +38,7 @@ const Product: React.FC<IProductProps> = props => {
       return
     }
 
-    addItemToCart({
-      variables: {
-        productId: props.match.params.productId,
-        selectedSize: selectedSize,
-      },
-    })
+    props.addItemToCart(data.product, selectedSize)
   }
 
   const handleFavorite = () => {
@@ -110,4 +104,4 @@ const Product: React.FC<IProductProps> = props => {
   )
 }
 
-export default Product
+export default withCart(Product)
