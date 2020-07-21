@@ -3,10 +3,7 @@ import { FiShoppingCart } from 'react-icons/fi'
 import './styles.scss'
 import SearchInput from './SearchInput'
 import { Link, withRouter } from 'react-router-dom'
-import { useGlobalDispatch, useGlobalState } from '~store'
-import Button from '~components/shared/Button'
-import isEmpty from '~helpers/isEmpty'
-import Account from './Account'
+import AccountDropdown from './AccountDropdown'
 import { IHeaderProps } from './interface'
 import withCart from '~hocs/cart/withCart'
 
@@ -19,7 +16,6 @@ const Header: React.FC<IHeaderProps> = props => {
 
   const handleSearch = () => {
     if (searchText !== '') {
-      console.log(searchText)
       setSearchText('')
     }
   }
@@ -65,15 +61,9 @@ const Header: React.FC<IHeaderProps> = props => {
               </div>
             </Link>
           </div>
-          {!isEmpty(state.userId) ? (
-            <div className="header__ctas__profile">
-              <Account handleLogout={handleLogout} />
-            </div>
-          ) : (
-            <Button onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}>
-              Login
-            </Button>
-          )}
+          <div className="header__ctas__profile">
+            <AccountDropdown handleLogout={handleLogout} />
+          </div>
         </div>
       </div>
     </div>
