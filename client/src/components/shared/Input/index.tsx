@@ -13,7 +13,7 @@ const Input: React.FC<IInputProps> = props => {
   const { type, label, name, inputValue, handleInput } = props
 
   const labelStyles = {
-    transform: 'translateY(0.7rem) scale(0.75)',
+    transform: 'translateY(0.4rem) scale(0.75)',
   }
 
   return (
@@ -33,6 +33,7 @@ const Input: React.FC<IInputProps> = props => {
       >
         {label}
       </label>
+      <div className="input__baseline" />
     </div>
   )
 }
