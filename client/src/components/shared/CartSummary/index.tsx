@@ -1,21 +1,20 @@
 import React from 'react'
+import Title from '../Title'
+import withCart from '~hocs/cart/withCart'
 import './styles.scss'
-import { useGlobalState } from '~store'
 
-const CartSummary: React.FC = () => {
-  const { state } = useGlobalState()
-
+const CartSummary: React.FC = (props: any) => {
   return (
     <div className="cart-summary">
-      <h2 className="cart-summary__header">summary</h2>
+      <Title>summary</Title>
       <div className="cart-summary__sub-total">
         <div className="cart-summary__sub-total__title">
-          SubTotal <span>{`(${state.cartSize} items)`}</span>
+          SubTotal <span>{`(${props.cart.quantity} items)`}</span>
         </div>
-        <div className="cart-summary__sub-total__cost">{`$${state.cartPrice}`}</div>
+        <div className="cart-summary__sub-total__cost">{`$${props.cart.price}`}</div>
       </div>
     </div>
   )
 }
 
-export default CartSummary
+export default withCart(CartSummary)
