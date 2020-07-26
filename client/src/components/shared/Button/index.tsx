@@ -2,7 +2,8 @@ import React from 'react'
 import './styles.scss'
 
 interface IButtonProps {
-  type?: string
+  type?: 'button' | 'submit' | undefined
+  color?: string
   styles?: { [key: string]: number | string }
   className?: string
   onClick?: (arg: any) => any
@@ -10,6 +11,7 @@ interface IButtonProps {
 
 const Button: React.FC<IButtonProps> = ({
   type,
+  color,
   styles,
   className,
   onClick,
@@ -17,13 +19,15 @@ const Button: React.FC<IButtonProps> = ({
 }) => {
   const buttonStyles = {
     ...styles,
-    backgroundColor: type === 'white' ? '#fff' : '#000',
-    color: type === 'white' ? '#000' : '#fff',
+    backgroundColor: color === 'white' ? '#fff' : '#000',
+    color: color === 'white' ? '#000' : '#fff',
+    border: color === 'white' ? 'none' : 'border: 1.2px solid #000',
   }
   return (
     <button
       className={`button ${className}`}
       style={buttonStyles}
+      type={type}
       onClick={onClick}
     >
       {children}
@@ -35,6 +39,7 @@ export default Button
 
 Button.defaultProps = {
   styles: {},
-  type: 'default',
+  type: 'button',
+  color: 'black',
   className: '',
 }
