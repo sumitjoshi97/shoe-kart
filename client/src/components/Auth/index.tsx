@@ -5,8 +5,9 @@ import Input from '../shared/Input'
 import './styles.scss'
 import { IFormInput } from './interface'
 import { useGlobalDispatch } from '~store'
-import { FiX } from 'react-icons/fi'
 import Button from '~components/shared/Button'
+import Dialog from '~components/shared/Dialog'
+import Title from '~components/shared/Title'
 
 const Auth: React.FC = () => {
   const formTypes = {
@@ -64,19 +65,9 @@ const Auth: React.FC = () => {
   }, [data])
 
   return (
-    <div className="auth-container">
-      <div
-        className="auth-container__toggle"
-        onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}
-      />
+    <Dialog>
       <div className="auth">
-        <button
-          className="auth__toggle-btn"
-          onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}
-        >
-          <FiX />
-        </button>
-        <h1 className="auth__header">{formType}</h1>
+        <Title>{formType}</Title>
         <form
           className="auth__form"
           onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
@@ -130,7 +121,7 @@ const Auth: React.FC = () => {
           )}
         </div>
       </div>
-    </div>
+    </Dialog>
   )
 }
 
