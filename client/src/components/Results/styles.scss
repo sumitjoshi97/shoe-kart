@@ -219,7 +219,7 @@
   margin: auto;
   position: sticky;
   top: 5.8rem;
-  z-index: 10;
+  z-index: 1;
   background-color: #fff;
 }
 
@@ -241,7 +241,6 @@
   &__nav {
     display: flex;
     align-items: center;
-    z-index: 100;
     &__sort {
       position: relative;
       &__btn {
