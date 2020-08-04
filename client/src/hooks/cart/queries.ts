@@ -1,8 +1,11 @@
 import gql from 'graphql-tag'
 
 export const fetchCartQuery = gql`
-  query fetchCart {
+  query {
     cart {
+      _id
+      price
+      quantity
       items {
         _id
         product {
@@ -22,8 +25,12 @@ export const fetchCartQuery = gql`
 `
 
 export const addToCartMutation = gql`
-  mutation($productId: ID!, $selectedSize: Int!) {
-    addToCart(productId: $productId, selectedSize: $selectedSize) {
+  mutation($productId: ID!, $selectedSize: Int!, $quantity: Int) {
+    addToCart(
+      productId: $productId
+      selectedSize: $selectedSize
+      quantity: $quantity
+    ) {
       _id
     }
   }
@@ -44,6 +51,14 @@ export const updateCartItemMutation = gql`
 export const removeFromCartMutation = gql`
   mutation($cartItemId: ID!) {
     removeFromCart(cartItemId: $cartItemId) {
+      _id
+    }
+  }
+`
+
+export const clearCartMutation = gql`
+  mutation {
+    clearCart {
       _id
     }
   }
