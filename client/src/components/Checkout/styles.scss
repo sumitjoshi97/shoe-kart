@@ -1,0 +1,66 @@
+.checkout {
+  display: flex;
+  max-width: 1200px;
+  margin: auto;
+  padding-top: 2rem;
+  &__sections {
+    flex: 2;
+  }
+
+  &__summary {
+    padding-left: 2.4rem;
+    flex: 1;
+  }
+}
+
+.shipping {
+  &__data {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 2rem 0 0;
+  }
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgb(190, 190, 190);
+}
+
+.payment {
+  &__form {
+    &__row {
+      display: flex;
+
+      .input {
+        position: relative;
+        width: 100%;
+        height: 48px;
+
+        .StripeElement {
+          opacity: 0;
+          transition: opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+          will-change: opacity;
+        }
+
+        &__field.StripeElement--focus,
+        &__field:not(.StripeElement--empty) {
+          opacity: 1;
+        }
+        &__field.StripeElement--focus + &__label,
+        &__field:not(.StripeElement--empty) + &__label {
+          color: #666666;
+          transform: scale(0.75) translateY(0.4rem);
+          cursor: default;
+        }
+      }
+      .input__field.StripeElement--focus + .input__label,
+      .input__field:not(.StripeElement--empty) + .input__label {
+        color: #666666;
+        transform: scale(0.75) translateY(0.4rem);
+        cursor: default;
+      }
+      .half-width {
+        width: 50%;
+      }
+    }
+  }
+}
