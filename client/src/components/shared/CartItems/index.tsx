@@ -34,7 +34,7 @@ const CartItems = (props: any) => {
 
   return (
     <div className="cart-items">
-      <Title title={props.header} />
+      <Title>{props.header}</Title>
       <div className="cart-items__list">{renderCartItems()}</div>
     </div>
   )
