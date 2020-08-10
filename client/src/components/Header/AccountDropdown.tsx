@@ -47,7 +47,7 @@ const AccountDropdown: React.FC<any> = props => {
           {showAccountOptions && accountDropdownOptions}
         </div>
       ) : (
-        <Button onClick={() => dispatch({ type: 'SHOW_AUTH_DIALOG' })}>
+        <Button onClick={() => dispatch({ type: 'TOGGLE_DIALOG' })}>
           Login
         </Button>
       )}
