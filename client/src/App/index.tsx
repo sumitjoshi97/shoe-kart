@@ -51,15 +51,15 @@ const App: React.FC = () => {
     <>
       <Header />
       <div className="app-container">
-        {state.showAuthDialog && state.userId === '' && <Auth />}
+        {state.toggleDialog && state.userId === '' && <Auth />}
         <Switch>
           {routes.map(route => (
             <Route
               key={route.path}
               path={route.path}
-              render={props => (
+              render={() => (
                 <Suspense fallback={<div />}>
-                  <route.component {...props} />
+                  <route.component />
                 </Suspense>
               )}
             />

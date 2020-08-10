@@ -33,7 +33,7 @@ export const reducer = (state: IGlobalContextState, action: any) => {
       return removeUser(state)
 
     case actionTypes.TOGGLE_DIALOG:
-      return { ...state, toggleDialog: !state.showAuthDialog }
+      return { ...state, toggleDialog: !state.toggleDialog }
 
     default:
       return state

@@ -2,8 +2,7 @@ import { Reducer } from 'react'
 
 export interface IGlobalContextState {
   userId: string
-  showAuthDialog: boolean
-  cartSize: number
+  toggleDialog: boolean
 }
 
 export interface Action {
