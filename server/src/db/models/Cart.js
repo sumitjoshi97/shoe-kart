@@ -6,10 +6,7 @@ const cartSchema = new Schema({
 	quantity: { type: Number, required: true, min: 0, default: 0 },
 	items: [
 		{
-			product: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'Product',
-			},
+			product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
 			quantity: { type: Number, default: 1, min: 1, max: 10 },
 			selectedSize: { type: Number, required: true },
 		},
