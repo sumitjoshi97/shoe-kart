@@ -9,7 +9,7 @@
   "scripts": {
     "start": "@babel/node src/index.js",
     "watch": "babel-watch src/index.js",
-    "seed": "babel-watch seed.js"
+    "seed": "babel-watch src/seed.js"
   },
   "dependencies": {
     "apollo-server-express": "^2.11.0",
@@ -24,7 +24,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.4",
     "mongoose": "^5.9.3",
-    "stripe": "^8.38.0"
+    "stripe": "^8.79.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
