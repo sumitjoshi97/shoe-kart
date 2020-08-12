@@ -18,10 +18,9 @@ export default [
     path: '/checkout',
   },
   {
-    component: lazy(() => import('../components/Order')),
-    path: '/order/:orderId',
+    component: lazy(() => import('../components/Orders')),
+    path: '/orders',
   },
-
   {
     component: lazy(() => import('../components/Home')),
     path: '/',
