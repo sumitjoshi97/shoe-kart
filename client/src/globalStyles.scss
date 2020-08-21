@@ -48,3 +48,38 @@ body {
 input:-webkit-autofill {
   box-shadow: inset 0 0 0 50px #fff;
 }
+
+.container {
+  margin: auto;
+  display: flex;
+  padding-top: 2rem;
+  position: relative;
+  &--wide {
+    max-width: 1400px;
+  }
+
+  &--medium {
+    max-width: 1200px;
+  }
+}
+
+.title-primary {
+  font-size: 2.2rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.title-secondary {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding-bottom: 5px;
+}
+
+.title-tertiary {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #808080;
+  text-transform: capitalize;
+  padding-bottom: 5px;
+}
