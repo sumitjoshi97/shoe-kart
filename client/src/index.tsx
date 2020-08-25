@@ -5,15 +5,16 @@ import { BrowserRouter as Router } from 'react-router-dom'
 
 import App from './App'
 import client from './api/client'
+import { ContextProvider } from '~context/ContextProvider'
+
 import './globalStyles.scss'
-import { GlobalStateProvider } from '~store'
 
 const app = (
   <Router>
     <ApolloProvider client={client}>
-      <GlobalStateProvider>
+      <ContextProvider>
         <App />
-      </GlobalStateProvider>
+      </ContextProvider>
     </ApolloProvider>
   </Router>
 )
