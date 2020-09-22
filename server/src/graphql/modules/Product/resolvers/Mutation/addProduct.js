@@ -1,12 +1,11 @@
-import Product from "../../../../../db/models/Product";
-import mongoose from "mongoose";
+import Product from '../../../../../db/models/Product'
 
-const addProduct = (context, args) => {
-  const _id = new mongoose.Types.ObjectId()
-  const product = new Product({ ...args, _id })
-  product.save()
-
-  return product
+async function addProduct(_, args) {
+	try {
+		return await new Product(args).save()
+	} catch {
+		throw new Error("can't add new product try again")
+	}
 }
 
 export default addProduct
