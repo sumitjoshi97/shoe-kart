@@ -2,7 +2,7 @@ import UserInfo from '../../../../../db/models/UserInfo'
 
 async function addUserInfo(_, { address }, { user }) {
 	try {
-		const isUserInfo = UserInfo.findOne({ user: user.userId })
+		const isUserInfo = await UserInfo.findOne({ user: user.userId })
 		if (isUserInfo) {
 			throw new Error('address is added for current user')
 		}
