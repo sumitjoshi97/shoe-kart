@@ -2,7 +2,7 @@ import { gql } from 'apollo-server-express'
 
 const typeDefs = gql`
 	extend type Query {
-		products(main_category: ID, categories: [ID]): [Product]
+		products(mainCategory: ID, categories: [ID], sortBy: String): [Product]
 		product(productId: ID!): Product
 	}
 
@@ -10,7 +10,7 @@ const typeDefs = gql`
 		addProduct(
 			name: String!
 			image: [String!]
-			main_category: ID!
+			mainCategory: ID!
 			categories: [ID]!
 			description: String!
 			price: Int!
@@ -23,7 +23,7 @@ const typeDefs = gql`
 		_id: ID!
 		name: String!
 		image: [String!]
-		main_category: Category!
+		mainCategory: Category!
 		categories: [Category!]!
 		description: String!
 		price: Int!
