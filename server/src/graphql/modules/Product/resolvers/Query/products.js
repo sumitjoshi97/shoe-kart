@@ -27,17 +27,36 @@ async function getFilterCategories(categories) {
 	return filterCategories
 }
 
-async function products(_, { main_category, categories }) {
-	if (!main_category && !categories) {
+async function products(_, { mainCategory, categories, sortBy }) {
+	// main-category = false | category = false | sortBy = false
+	if (!mainCategory && !categories && !sortBy) {
 		return await Product.find().sort({ lastUpdated: -1 })
 	}
 
-	if (main_category && !categories) {
-		return await Product.find({ main_category }).sort({ lastUpdated: -1 })
+	// main-category = false | category = false | sortBy = true - (priceDesc/priceAsc)
+	if (!mainCategory && !categories && sortBy) {
+		if (sortBy === 'priceDesc') {
+			return await Product.find().sort({ price: -1 })
+		}
+		return await Product.find().sort({ price: 1 })
+	}
+
+	// main-category = true | category = false | sortBy = false
+	if (mainCategory && !categories && !sortBy) {
+		return await Product.find({ mainCategory }).sort({ lastUpdated: -1 })
+	}
+
+	// main-category = true | category = false | sortBy = true - (priceDesc/priceAsc)
+	if (mainCategory && !categories && sortBy) {
+		if (sortBy === 'priceDesc') {
+			return await Product.find({ mainCategory }).sort({ price: -1 })
+		}
+		return await Product.find({ mainCategory }).sort({ price: 1 })
 	}
 
 	if (categories) {
 		const filterCategories = await getFilterCategories(categories)
+
 		const productsFilter = {
 			$and: filterCategories.map(subCategory => {
 				return {
@@ -50,11 +69,38 @@ async function products(_, { main_category, categories }) {
 			}),
 		}
 
-		if (main_category) {
-			return Product.find({ main_category, $and: productsFilter.$and })
+		// main-category = true | category = true | sortBy = false
+		if (mainCategory && !sortBy) {
+			return Product.find({ mainCategory, $and: productsFilter.$and }).sort({
+				lastUpdated: -1,
+			})
 		}
 
-		return Product.find(productsFilter)
+		// main-category = true | category = true | sortBy = true - (priceDesc/priceAsc)
+		if (mainCategory && sortBy) {
+			if (sortBy === 'priceDesc') {
+				return await Product.find({
+					mainCategory,
+					$and: productsFilter.$and,
+				}).sort({ price: -1 })
+			}
+
+			return await Product.find({
+				mainCategory,
+				$and: productsFilter.$and,
+			}).sort({ price: 1 })
+		}
+
+		// main-category = false | category = true | sortBy = true - (priceDesc/priceAsc)
+		if (!mainCategory && sortBy) {
+			if (sortBy === 'priceDesc') {
+				return await Product.find(productsFilter).sort({ price: -1 })
+			}
+			return await Product.find(productsFilter).sort({ price: 1 })
+		}
+
+		// main-category = false | category = true | sortBy = false
+		return await Product.find(productsFilter).sort({ lastUpdated: -1 })
 	}
 }
 
