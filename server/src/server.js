@@ -29,8 +29,8 @@ const apolloServer = new ApolloServer({
 
 apolloServer.applyMiddleware({ app, path: '/graphql' })
 
-app.get('/', (req, res) => res.status(404).json({ message: 'success' }))
+app.get('/', (_, res) => res.status(404).json({ message: 'success' }))
 
-const PORT = process.env.PORT || 4000
+const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => console.log(`server running at ${PORT}`))
