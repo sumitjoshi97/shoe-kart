@@ -9,7 +9,7 @@ const typeDefs = gql`
 	}
 
 	extend type Mutation {
-		createOrder(token: String!): Order! @isAuth(requires: USER)
+		createOrder: Order! @isAuth(requires: USER)
 	}
 
 	type OrderItem {
@@ -27,12 +27,6 @@ const typeDefs = gql`
 		price: Int!
 		items: [OrderItem]
 		date: Date!
-	}
-
-	input OrderItemInput {
-		product: ID!
-		price: Int!
-		quantity: Int!
 	}
 `
 
