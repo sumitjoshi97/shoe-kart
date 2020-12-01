@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "watch": "parcel --port=3000 src/index.html",
+    "watch": "parcel --port=8000 src/index.html",
     "build": "rm -rf dist && parcel build src/index.html"
   },
   "dependencies": {
