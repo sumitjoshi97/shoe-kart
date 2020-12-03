@@ -6,7 +6,7 @@ const useResize = (ref: React.RefObject<HTMLDivElement>) => {
   const observer = useRef(
     new ResizeObserver(entries => {
       const { width } = entries[0].contentRect
-      setLength(Math.floor(width / 3))
+      setLength(Math.floor(width))
     }),
   )
 
