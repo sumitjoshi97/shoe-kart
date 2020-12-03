@@ -1,15 +1,16 @@
 import React from 'react'
 import { FiCheck } from 'react-icons/fi'
-import { IFilterItemProps } from '../../interface'
+
+import { IFilterItemProps } from '../interface'
 import isColorValid from '~helpers/isColorValid'
 
-const FilterItem: React.FC<IFilterItemProps> = props => {
-  const { type, name, isFilterActive, setActiveFilters } = props
+const FilterItem: any = props => {
+  const { type, id, name, isFilterActive, setActiveFilters } = props
 
   const className =
     type === 'size' || type === 'color' ? `is--${type}` : 'is--default'
 
-  const getFilterItem = () => {
+  const renderFilterItem = () => {
     switch (type) {
       case 'color':
         return (
@@ -54,7 +55,7 @@ const FilterItem: React.FC<IFilterItemProps> = props => {
   return (
     <button
       className={`filter-item ${className}`}
-      onClick={() => setActiveFilters(type, name)}
+      onClick={() => setActiveFilters(id)}
       style={{
         border:
           type === 'size'
@@ -64,7 +65,7 @@ const FilterItem: React.FC<IFilterItemProps> = props => {
             : '',
       }}
     >
-      {getFilterItem()}
+      {renderFilterItem()}
     </button>
   )
 }
