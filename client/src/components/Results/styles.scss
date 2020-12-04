@@ -1,27 +1,34 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
+
 .results {
   display: flex;
   flex-direction: row;
-  max-width: 1400px;
-  width: 1400px;
   height: 100%;
-  margin: auto;
+  z-index: 1;
 }
 
 .products {
   position: relative;
   flex-grow: 1;
 }
+
 .product-card {
   position: relative;
   display: inline-block;
   margin: 0 1rem 5rem 1rem;
+  top: 0;
   height: auto;
-
+  vertical-align: top;
+  z-index: 0;
+  @include respond(phone) {
+    margin-bottom: 3.5rem;
+  }
   &__link {
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: 2;
   }
 
   &__img {
@@ -31,6 +38,7 @@
     height: auto;
     position: relative;
     overflow: hidden;
+    z-index: 0;
     img {
       object-fit: contain;
       width: 100%;
@@ -46,25 +54,27 @@
   }
 
   &__info {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 1.2rem 1.2rem 1.2rem 0;
+    margin-top: $margin-small;
+
     &__name {
       text-transform: capitalize;
+      font-weight: 600;
     }
+
+    &__type {
+      color: $grey-light;
+      text-transform: capitalize;
+      margin-top: $margin-xsmall;
+    }
+
     &__price {
+      margin-top: $margin-small;
+      font-weight: 500;
       &::before {
         content: "$";
         padding-right: 4px;
       }
     }
-  }
-
-  &__type {
-    color: #9e9e9e;
-    text-transform: capitalize;
-    font-weight: 600;
   }
 }
 
@@ -72,40 +82,61 @@
   position: relative;
   width: 24rem;
   flex-shrink: 0;
-}
 
-.left-nav {
-  position: sticky;
-  top: 0;
-  width: 20rem;
-  height: auto;
-  overflow-y: auto;
+  .left-nav {
+    position: sticky;
+    top: 0;
+    width: 20rem;
+    height: auto;
+    overflow-y: auto;
 
-  &__all-products {
-    display: inline-block;
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: #2d2d2d;
-    padding-right: 1rem;
-    padding-bottom: 0.5rem;
-    text-transform: capitalize;
-    cursor: pointer;
+    &__all-products {
+      display: inline-block;
+      font-size: $font-regular;
+      font-weight: 600;
+      color: $grey-dark;
+      padding-right: 1rem;
+      padding-bottom: 0.5rem;
+      text-transform: capitalize;
+      cursor: pointer;
+    }
   }
 }
 
-.categories {
-  display: block;
+.left-nav-mobile-container {
+  z-index: 2;
+
+  &__bg {
+    background-color: rgba($black, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    cursor: pointer;
+  }
+
+  .left-nav-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: auto;
+    padding-top: 4rem;
+    overflow-y: auto;
+    padding-left: 4rem;
+    background-color: $white;
+  }
 }
 
 .category-item {
   display: block;
-  font-size: 1.6rem;
   padding: 0.5rem 0.5rem 0.5rem 0;
   cursor: pointer;
 
   &__name {
     display: inline-block;
-    color: #2d2d2d;
+    color: $grey-dark;
     text-transform: capitalize;
     &__count {
       padding-left: 0.5rem;
@@ -115,17 +146,17 @@
 }
 
 .filter {
-  margin-top: 2.5rem;
-  border-top: 1px solid #7c7c7c;
+  margin: $margin-medium 0;
+  border-top: $border;
   &__header {
-    font-size: 1.6rem;
+    font-size: $font-regular;
     text-transform: capitalize;
     font-weight: 600;
-    margin-top: 0.8rem;
+    margin-top: 1.5rem;
   }
 
   &__options {
-    margin-top: 1rem;
+    margin-top: $margin-small;
     text-transform: capitalize;
     display: flex;
     flex-wrap: wrap;
@@ -135,7 +166,7 @@
 .filter-item {
   display: flex;
   align-items: center;
-  font-size: 1.6rem;
+  font-size: $font-regular;
   background-color: #fff;
   cursor: pointer;
   &:focus {
@@ -153,7 +184,7 @@
     align-self: center;
     width: 3rem;
     height: 3rem;
-    border: 1px solid #d7d7d7;
+    border: 2px solid #d7d7d7;
     border-radius: 100px;
   }
 
@@ -163,7 +194,7 @@
     align-items: center;
     height: 2rem;
     width: 2rem;
-    border: 1px solid #000;
+    border: $border;
     border-radius: 4px;
   }
 }
@@ -171,16 +202,19 @@
 .is--color {
   width: 32%;
   height: 100%;
-  min-height: 68px;
+  min-height: 62px;
   display: flex;
   flex-direction: column;
   -webkit-box-align: center;
   align-items: center;
   border: none;
-  background-color: #fff;
+  background-color: $white;
   cursor: pointer;
   &:focus {
     outline: none;
+  }
+  @include respond(tabPort) {
+    min-height: 50px;
   }
 
   .filter-item__name {
@@ -188,6 +222,10 @@
     font-size: 1.2rem;
     line-height: 1.4;
     padding-top: 2px;
+
+    @include respond(phone) {
+      font-size: 1.3rem;
+    }
   }
 }
 
@@ -215,10 +253,8 @@
 }
 
 .results-header-container {
-  max-width: 1400px;
-  margin: auto;
   position: sticky;
-  top: 5.8rem;
+  top: $margin-large;
   z-index: 1;
   background-color: #fff;
 }
@@ -229,30 +265,27 @@
 
 .results-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
   height: 6rem;
-  &__title {
-    flex-grow: 1;
-    font-size: 2.4rem;
-    font-weight: 600;
-    text-transform: capitalize;
-  }
+
   &__nav {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
+
     &__sort {
       position: relative;
       &__btn {
         span {
-          color: #878787;
+          margin-left: 1rem;
+          color: $grey-light;
         }
       }
       .sort-dropdown {
         position: absolute;
         display: flex;
         flex-direction: column;
-        background-color: #fff;
+        background-color: $white;
         top: 100%;
         right: 0;
         padding: 2rem;
@@ -261,7 +294,7 @@
         &__option {
           margin-bottom: 1rem;
           text-align: right;
-          background-color: #fff;
+          background-color: $white;
           width: 15rem;
           right: 0;
           border: none;
@@ -269,6 +302,7 @@
           font-size: inherit;
           font-family: inherit;
           cursor: pointer;
+          z-index: 3;
           &:focus,
           &:active {
             outline: none;
@@ -281,8 +315,8 @@
       display: flex;
       align-items: center;
       font-family: inherit;
-      font-size: 1.6rem;
-      background-color: #fff;
+      font-size: $font-regular;
+      background-color: $white;
       border: none;
       margin-left: 2rem;
       cursor: pointer;
