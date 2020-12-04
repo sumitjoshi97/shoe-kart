@@ -1,48 +1,40 @@
 import React from 'react'
-import Categories from './Categories'
-import Filter from './Filter'
-import { ILeftNavProps, IFilters } from '../interface'
-import isEmpty from '~helpers/isEmpty'
 
-const LeftNav: React.FC<ILeftNavProps> = ({ resultsStore, ...props }) => {
-  const renderFilters = () => {
-    if (
-      !isEmpty(resultsStore.filters) &&
-      !isEmpty(resultsStore.activeFilters)
-    ) {
-      const { filters, activeFilters } = resultsStore as {
-        filters: IFilters
-        activeFilters: IFilters
+import Category from './Category'
+import Filter from './Filter'
+
+import useCategory from '~hooks/categories/useCategory'
+import useStores from '~hooks/useStores'
+
+const LeftNav: any = () => {
+  const { categories } = useCategory()
+  const { uiStore } = useStores()
+  const { resetCategories } = uiStore
+
+  const renderCategoriesAndFilters = () => {
+    return categories.map(category => {
+      if (category.name === 'main') {
+        return <Category key={category._id} categories={category.items} />
       }
-      return Object.keys(filters).map((filterType: string, index: number) => (
+      return (
         <Filter
-          key={index + filterType}
-          type={filterType}
-          filterOptions={filters[filterType]}
-          activeFilterOptions={activeFilters[filterType]}
-          setActiveFilters={props.setActiveFilters}
+          key={category._id}
+          type={category.name}
+          filterOptions={category.items}
         />
-      ))
-    }
+      )
+    })
   }
 
   return (
     <div className="left-nav-container">
       <div className="left-nav">
-        <div
-          className="left-nav__all-products"
-          onClick={props.resetResultsStore}
-        >
-          All
-        </div>
         <div className="left-nav__categories">
-          <Categories
-            categories={resultsStore.categories}
-            activeCategory={resultsStore.activeCategory}
-            setActiveCategory={props.setActiveCategory}
-          />
+          <div className="left-nav__all-products" onClick={resetCategories}>
+            All
+          </div>
+          {renderCategoriesAndFilters()}
         </div>
-        <div className="left-nav__filters">{renderFilters()}</div>
       </div>
     </div>
   )
