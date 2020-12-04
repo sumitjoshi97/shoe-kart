@@ -1,0 +1,30 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
+
+//stykes
+.layout {
+  margin: auto;
+  padding-top: 2rem;
+
+  &--large {
+    margin: 0 $margin-large;
+    @include respond(bigDesk) {
+      max-width: $width-large;
+      margin: auto;
+    }
+  }
+
+  &--medium {
+    max-width: $width-medium;
+    @include respond(tabLand) {
+      margin: 0 $margin-large;
+    }
+  }
+
+  &--small {
+    max-width: $width-small;
+    @include respond(tabPort) {
+      margin: 0 $margin-large;
+    }
+  }
+}
