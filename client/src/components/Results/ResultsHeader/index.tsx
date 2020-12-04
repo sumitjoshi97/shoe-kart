@@ -1,33 +1,37 @@
 import React, { useState } from 'react'
 import { FiFilter, FiChevronDown } from 'react-icons/fi'
-import { IResultsHeaderProps, ISortOption } from '../interface'
 
-const ResultsHeader: React.FC<IResultsHeaderProps> = ({
-  category,
-  showLeftNav,
-  sortOptions,
-  sortBy,
-  setSortBy,
-  toggleLeftNav,
-}) => {
-  const [showSort, setShowSort] = useState<boolean>(false)
+import useStores from '~hooks/useStores'
+import { ISortOption } from '~interface'
 
-  const handleSort = (sortOption: ISortOption) => {
-    if (sortBy.value !== sortOption.value) {
-      setSortBy(sortOption)
+const sortOptions = [
+  { name: 'Featured', value: '' },
+  { name: 'Price: High to Low', value: 'priceDesc' },
+  { name: 'Price: Low to High', value: 'priceAsc' },
+]
+
+const ResultsHeader = () => {
+  const { uiStore } = useStores()
+  const { showLeftNav, sortBy, handleSortBy, toggleLeftNav } = uiStore
+
+  const [showSort, setShowSortTo] = useState<boolean>(false)
+
+  const handleSort = (sortOption: string) => {
+    if (sortBy !== sortOption) {
+      handleSortBy(sortOption)
     }
-    setShowSort(!showSort)
+    setShowSortTo(!showSort)
   }
 
-  const sortDropdown = (
+  const renderSortDropdown = () => (
     <div className="sort-dropdown">
-      {sortOptions.map((sortOption: ISortOption, index: number) => (
+      {sortOptions.map((sortOption: ISortOption) => (
         <button
-          key={`${index} ${sortOption.value}`}
+          key={`${sortOption.value}`}
           className="sort-dropdown__option"
-          onClick={() => handleSort(sortOption)}
+          onClick={() => handleSort(sortOption.value)}
         >
-          {sortOption.title}
+          {sortOption.name}
         </button>
       ))}
     </div>
@@ -36,7 +40,6 @@ const ResultsHeader: React.FC<IResultsHeaderProps> = ({
   return (
     <div className="results-header-container ">
       <header className="results-header">
-        <h1 className="results-header__title">{category} shoes</h1>
         <nav className="results-header__nav">
           <button
             className="results-header__nav__hide-filters"
@@ -48,15 +51,18 @@ const ResultsHeader: React.FC<IResultsHeaderProps> = ({
           <div className="results-header__nav__sort">
             <button
               className="results-header__nav__sort__btn"
-              onClick={() => setShowSort(!showSort)}
+              onClick={() => setShowSortTo(!showSort)}
             >
               Sort by
               <span>
-                {sortBy.hasOwnProperty('title') ? `: ${sortBy.title}` : ''}
+                {
+                  sortOptions.find(sortOption => sortOption.value === sortBy)
+                    ?.name
+                }
               </span>
               <FiChevronDown />
             </button>
-            {showSort && sortDropdown}
+            {showSort && renderSortDropdown()}
           </div>
         </nav>
       </header>

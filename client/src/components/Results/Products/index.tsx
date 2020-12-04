@@ -1,85 +1,53 @@
-import React, { ReactNodeArray, useRef } from 'react'
-import ProductCard from './ProductCard'
-import { IProduct } from '../interface'
-import useResize from '../hooks/useResize'
+import React, { useEffect, useRef, useState } from 'react'
 
-const Products: React.FC<any> = ({ results, resultsStore }) => {
+import Loading from '~components/shared/Loading'
+import ProductCard from './ProductCard'
+
+import useProducts from '~hooks/products/useProducts'
+import useResize from '~hooks/useResize'
+
+import isEmpty from '~helpers/isEmpty'
+import { IProduct } from '~interface'
+
+const BREAKPOINT = 768
+
+const Products = () => {
+  const { products, productsLoading } = useProducts()
+
   const productsRef = useRef<HTMLDivElement>(null)
   const { length } = useResize(productsRef)
 
-  const getProducts = () => {
-    const { activeCategory, activeFilters, sortBy } = resultsStore
-    let products: IProduct[] = []
+  const [cardWidth, setCardWidth] = useState<number>(0)
 
-    if (results) {
-      products = results.products
+  useEffect(() => {
+    if (length <= BREAKPOINT) {
+      setCardWidth(Math.floor(length / 2))
+    } else {
+      setCardWidth(Math.floor(length / 3))
     }
-
-    if (activeCategory && activeCategory !== '') {
-      products = products.filter(
-        (product: IProduct) => product.category === activeCategory,
-      )
-    }
-
-    if (
-      activeFilters &&
-      Object.keys(activeFilters).length > 0 &&
-      (activeFilters.gender.length > 0 ||
-        activeFilters.color.length > 0 ||
-        activeFilters.size.length > 0)
-    ) {
-      for (let filterType in activeFilters) {
-        if (activeFilters[filterType].length > 0) {
-          products = products.filter((product: IProduct) =>
-            activeFilters[filterType].find((filter: string | number) => {
-              if (Array.isArray(product[filterType])) {
-                return (product[filterType] as ReactNodeArray).find(option => {
-                  return option === filter
-                })
-              } else {
-                return filter === product[filterType]
-              }
-            }),
-          )
-        }
-      }
-    }
-    if (!sortBy.hasOwnProperty('title') || sortBy.value === '') {
-      return products
-    }
-
-    if (sortBy.value === 'priceAsc') {
-      const tempProducts = [...products]
-      return tempProducts.sort(
-        (product1: IProduct, product2: IProduct) =>
-          parseInt(product1.price) - parseInt(product2.price),
-      )
-    }
-    if (sortBy.value === 'priceDesc') {
-      const tempProducts = [...products]
-      return tempProducts.sort(
-        (product1: IProduct, product2: IProduct) =>
-          parseInt(product2.price) - parseInt(product1.price),
-      )
-    }
-  }
+  }, [length])
 
   const renderProducts = () => {
-    const products: IProduct[] | undefined = getProducts()
-    if (typeof products === 'undefined') return
+    if (productsLoading) return <Loading />
+
+    if (isEmpty(products)) {
+      return (
+        <h3 style={{ textAlign: 'center' }}>Sorry, there are no products</h3>
+      )
+    }
 
     return products.map((product: IProduct) => {
-      const { _id, name, image, category, gender, price } = product
+      const { _id, name, image, mainCategory, categories, price } = product
       return (
         <ProductCard
           key={_id}
-          id={_id}
+          _id={_id}
           name={name}
-          category={category}
-          gender={gender}
-          image={image[0]}
+          image={image}
+          mainCategory={mainCategory}
+          categories={categories}
           price={price}
-          length={length || productsRef.current?.offsetWidth}
+          width={cardWidth}
         />
       )
     })
