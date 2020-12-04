@@ -1,53 +1,61 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import ImageSlider from './ImageSlider'
-import Size from './Size'
+import React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
+
 import Button from '~components/shared/Button'
-import * as queries from './queries'
+import ImageSlider from './ImageSlider'
+import Layout from '~components/Layout'
+import Loading from '~components/shared/Loading'
+import Size from './Size'
+
+import useCart from '~hooks/cart/useCart'
+import useProduct from '~hooks/products/useProduct'
+
+import { ICategory } from '~interface'
 import './styles.scss'
-import { FiHeart } from 'react-icons/fi'
-import withCart from '../../hocs/cart/withCart'
 
-const Product: React.FC<any> = props => {
-  const [sizeError, setSizeError] = useState<boolean>(false)
+export interface IProductProps
+  extends RouteComponentProps<{ productId: string }> {}
 
-  const { data } = useQuery(queries.GET_PRODUCT, {
-    variables: { productId: props.match.params.productId },
-  })
+const Product: React.FC<IProductProps> = props => {
+  const { addItemToCart } = useCart()
+  const {
+    product,
+    productLoading,
+    selectedSize,
+    sizeError,
+    handleSizeSelection,
+    handleSizeError,
+  } = useProduct(props.match.params.productId)
 
-  const [selectedSize, setSelectedSize] = useState<number>(-1)
+  const renderSizes = () => {
+    const sizes: ICategory[] = []
 
-  const handleSize = (size: number) => {
-    sizeError === true && setSizeError(false)
-    setSelectedSize(size !== selectedSize ? size : -1)
-  }
-
-  const renderSizes = (sizes: number[]) =>
-    sizes.map((size: number) => (
-      <Size
-        key={size}
-        size={size}
-        isSizeSelected={selectedSize === size}
-        selectSize={() => handleSize(size)}
-      />
-    ))
-
-  const handleCart = () => {
-    if (selectedSize === -1) {
-      setSizeError(true)
-      return
+    if (product) {
+      product.categories.forEach((category: ICategory) => {
+        if (category.parent?.name === 'size') sizes.push(category)
+      })
     }
 
-    props.addItemToCart(data.product, selectedSize)
+    return sizes.map((size: ICategory) => (
+      <Size
+        key={size._id}
+        size={size.name}
+        isSizeSelected={selectedSize === size._id}
+        selectSize={() => handleSizeSelection(size)}
+      />
+    ))
   }
 
-  const handleFavorite = () => {
-    console.log('favorite')
+  const handleCart = () => {
+    handleSizeError()
+    addItemToCart(product, selectedSize)
   }
 
   const renderProduct = () => {
-    if (data && data.product) {
-      const { product } = data
+    if (productLoading) {
+      return <Loading />
+    }
+    if (product) {
       return (
         <>
           <div className="product__image-slider">
@@ -56,7 +64,13 @@ const Product: React.FC<any> = props => {
           <div className="product__info">
             <div className="product__info__header">
               <h2 className="product__info__header__sub">
-                {product.category} / {product.gender} Shoe
+                {product.mainCategory.name} /{' '}
+                {
+                  product.categories.find(
+                    (category: ICategory) => category.parent?.name === 'gender',
+                  ).name
+                }
+                Shoe
               </h2>
               <h1 className="product__info__header__main">{product.name}</h1>
             </div>
@@ -72,7 +86,7 @@ const Product: React.FC<any> = props => {
                 className="product__info__sizes__selection"
                 style={{ boxShadow: sizeError ? '0 0 0 1px #d43f21' : '' }}
               >
-                {renderSizes(product.size)}
+                {renderSizes()}
               </div>
             </div>
             <div className="product__info__description">
@@ -83,13 +97,6 @@ const Product: React.FC<any> = props => {
               <Button onClick={handleCart} styles={{ flex: 1 }}>
                 Add to cart
               </Button>
-              <Button
-                type="white"
-                styles={{ marginLeft: '1.6rem' }}
-                onClick={handleFavorite}
-              >
-                <FiHeart size="1.6rem" />
-              </Button>
             </div>
           </div>
         </>
@@ -98,10 +105,10 @@ const Product: React.FC<any> = props => {
   }
 
   return (
-    <div className="product-container">
+    <Layout>
       <div className="product">{renderProduct()}</div>
-    </div>
+    </Layout>
   )
 }
 
-export default withCart(Product)
+export default Product
