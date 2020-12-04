@@ -13,9 +13,18 @@ export const fetchCartQuery = gql`
           name
           image
           price
-          size
-          gender
-          category
+          mainCategory {
+            _id
+            name
+          }
+          categories {
+            _id
+            name
+            parent {
+              _id
+              name
+            }
+          }
         }
         selectedSize
         quantity
@@ -25,7 +34,7 @@ export const fetchCartQuery = gql`
 `
 
 export const addToCartMutation = gql`
-  mutation($productId: ID!, $selectedSize: Int!, $quantity: Int) {
+  mutation($productId: ID!, $selectedSize: ID!, $quantity: Int) {
     addToCart(
       productId: $productId
       selectedSize: $selectedSize
@@ -37,7 +46,7 @@ export const addToCartMutation = gql`
 `
 
 export const updateCartItemMutation = gql`
-  mutation($cartItemId: ID!, $quantity: Int, $selectedSize: Int) {
+  mutation($cartItemId: ID!, $quantity: Int, $selectedSize: ID) {
     updateCartItem(
       cartItemId: $cartItemId
       quantity: $quantity
