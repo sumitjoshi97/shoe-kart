@@ -1,5 +1,10 @@
 import React from 'react'
-import { ISizeProps } from './interface'
+
+interface ISizeProps {
+  size: string
+  isSizeSelected: boolean
+  selectSize: () => void
+}
 
 const Size: React.FC<ISizeProps> = ({ size, isSizeSelected, selectSize }) => {
   return (
