@@ -1,16 +1,23 @@
 import React from 'react'
-import Title from '../Title'
 import isEmpty from '~helpers/isEmpty'
-import { ICartItem } from './interface'
-import withCart from '~hocs/cart/withCart'
+import { ICartItem } from '~interface'
 import CartItem from './CartItem'
-import './styles.scss'
 
-const CartItems = (props: any) => {
+export interface ICartItemsProps {
+  cartItems: ICartItem[]
+  updateCartItem: (
+    cartItemId: string,
+    quantity: number,
+    selectedSize: string,
+  ) => void
+  removeItemFromCart: (cartItemId: string) => void
+}
+
+const CartItems: React.FC<ICartItemsProps> = ({ cartItems, ...props }) => {
   const handleCartItemUpdate = (
     cartItemId: string,
     quantity: number,
-    selectedSize: number,
+    selectedSize: string,
   ) => {
     props.updateCartItem(cartItemId, quantity, selectedSize)
   }
@@ -20,8 +27,8 @@ const CartItems = (props: any) => {
   }
 
   const renderCartItems = () => {
-    if (!isEmpty(props.cart.items)) {
-      return props.cart.items.map((cartItem: ICartItem) => (
+    if (!isEmpty(cartItems)) {
+      return cartItems.map((cartItem: ICartItem) => (
         <CartItem
           key={cartItem._id}
           cartItem={cartItem}
@@ -32,12 +39,7 @@ const CartItems = (props: any) => {
     }
   }
 
-  return (
-    <div className="cart-items">
-      <Title>{props.header}</Title>
-      <div className="cart-items__list">{renderCartItems()}</div>
-    </div>
-  )
+  return <>{renderCartItems()}</>
 }
 
-export default withCart(CartItems)
+export default CartItems
