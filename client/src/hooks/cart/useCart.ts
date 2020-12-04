@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from 'react'
-import { useGlobalState } from '~store'
+import { useEffect, useMemo } from 'react'
+
 import isEmpty from '~helpers/isEmpty'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import {
@@ -9,25 +9,29 @@ import {
   updateCartItemMutation,
   clearCartMutation,
 } from './queries'
-import { getLocalCart, setLocalCart } from '~helpers/localCart'
-import { v4 as uuid } from 'uuid'
 
-const initCartStore = {
-  quantity: 0,
-  price: 0,
-  items: {},
-}
+import useStores from '~hooks/useStores'
+import { ICartItem, IProduct } from '~interface'
 
 const useCart = () => {
-  const { state } = useGlobalState()
-  const [cartStore, setCartStore] = useState(initCartStore)
-  const isAuth = !isEmpty(state.userId)
+  const { authStore, cartStore } = useStores()
+  const { isAuth } = authStore
+  const {
+    localCart,
+    addItemToLocalCart,
+    deleteLocalCart,
+    updateLocalCartItem,
+    removeItemFromLocalCart,
+    setLocalCartFromLocalStorage,
+  } = cartStore
 
   const {
     loading: isCartLoading,
     data: cartData,
     refetch: refetchCart,
-  } = useQuery(fetchCartQuery)
+  } = useQuery(fetchCartQuery, {
+    skip: !isAuth,
+  })
 
   const [addToCartMutationFun, { loading: addToCartLoading }] = useMutation(
     addToCartMutation,
@@ -46,8 +50,14 @@ const useCart = () => {
   const [clearCartMutationFun] = useMutation(clearCartMutation)
 
   useEffect(() => {
-    if (isAuth && !isEmpty(cartStore.items)) {
-      Object.values(cartStore).forEach((cartItem: any) =>
+    if (!isAuth) {
+      setLocalCartFromLocalStorage()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isAuth && !isEmpty(localCart.items)) {
+      Object.values(localCart.items).forEach((cartItem: ICartItem) =>
         addToCartMutationFun({
           variables: {
             productId: cartItem.product._id,
@@ -56,14 +66,13 @@ const useCart = () => {
           },
         }),
       )
-      setCartStore(initCartStore)
-      setLocalCart({})
+      deleteLocalCart()
       refetchCart()
     }
-  }, [isAuth, cartStore])
 
-  useEffect(() => {
-    refetchCart()
+    if (isAuth && isEmpty(localCart.items)) {
+      refetchCart()
+    }
   }, [isAuth])
 
   const cart = useMemo(() => {
@@ -71,67 +80,29 @@ const useCart = () => {
       return cartData.cart
     }
 
-    if (!isAuth && !isEmpty(state.cart)) {
+    if (!isAuth && !isEmpty(localCart.items)) {
       return {
-        items: Object.values(cartStore.items),
-        price: cartStore.price,
-        quantity: cartStore.quantity,
+        items: Object.values(localCart.items),
+        price: localCart.price,
+        quantity: localCart.quantity,
       }
     }
 
-    const localCart = getLocalCart()
-    if (localCart && !isAuth && isEmpty(cart)) {
-      const parsedCart = JSON.parse(localCart)
-      if (!isEmpty(parsedCart)) {
-        setCartStore(parsedCart)
-        return {
-          items: Object.values(parsedCart.items),
-          price: parsedCart.price,
-          quantity: parsedCart.quantity,
-        }
-      }
-    }
+    return {}
+  }, [isAuth, cartData, localCart])
 
-    return initCartStore
-  }, [isAuth, cartData, cartStore])
+  const handleAddItemToCart = (product: IProduct, selectedSize: string) => {
+    if (isEmpty(selectedSize)) return
 
-  const handleAddItemToCart = (
-    product: any,
-    selectedSize: number,
-    quantity: number = 1,
-  ) => {
     if (!isAuth) {
-      const { _id, name, image, price, size, gender, category } = product
-      const cartItem = {
-        _id: uuid(),
-        product: {
-          _id: _id,
-          name: name,
-          image: image[0],
-          price: price,
-          size: size,
-          gender: gender,
-          category: category,
-        },
-        quantity: 1,
-        selectedSize,
-      }
-
-      const updatedCart = {
-        ...cartStore,
-        quantity: cartStore.quantity + quantity,
-        price: cartStore.price + parseInt(price) * quantity,
-        items: { ...cartStore.items, [cartItem._id]: cartItem },
-      }
-      setLocalCart(updatedCart)
-      setCartStore(updatedCart)
+      addItemToLocalCart(product, selectedSize)
     }
 
     if (isAuth) {
       addToCartMutationFun({
         variables: {
           productId: product._id,
-          quantity,
+          quantity: 1,
           selectedSize,
         },
         refetchQueries: [{ query: fetchCartQuery }],
@@ -141,17 +112,7 @@ const useCart = () => {
 
   const handleRemoveCartItem = (cartItemId: string) => {
     if (!isAuth) {
-      const tempCartItems = cartStore.items as any // fix type //
-      const cartItem = tempCartItems[cartItemId]
-      delete tempCartItems[cartItemId]
-
-      const updatedCart = {
-        quantity: cartStore.quantity - cartItem.quantity,
-        price: cartStore.price - cartItem.price,
-        items: tempCartItems,
-      }
-      setLocalCart(updatedCart)
-      setCartStore(updatedCart)
+      removeItemFromLocalCart(cartItemId)
     }
 
     if (isAuth) {
@@ -165,29 +126,12 @@ const useCart = () => {
   const handleUpdateCartItem = (
     cartItemId: string,
     quantity: number,
-    selectedSize: number,
+    selectedSize: string,
   ) => {
     if (!isAuth) {
-      const cartItem = cartStore.items[cartItemId]
-      const updatedCartQuantity =
-        cartStore.quantity - cartItem.quantity + quantity
-      const updatedCartPrice =
-        cartStore.price +
-        (quantity - cartItem.product.quantity) * cartItem.price
-
-      cartItem.quantity = quantity
-      cartItem.selectedSize = selectedSize
-
-      const updatedCart = {
-        ...cartStore,
-        quantity: updatedCartQuantity,
-        price: updatedCartPrice,
-        items: { ...cartStore.items, [cartItemId]: cartItem },
-      }
-
-      setLocalCart(updatedCart)
-      setCartStore(updatedCart)
+      updateLocalCartItem(cartItemId, quantity, selectedSize)
     }
+
     if (isAuth) {
       updateCartItemMutationFun({
         variables: { cartItemId, quantity, selectedSize },
