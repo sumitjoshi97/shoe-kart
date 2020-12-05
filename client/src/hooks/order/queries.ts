@@ -4,6 +4,7 @@ export const fetchOrdersQuery = gql`
   query {
     orders {
       _id
+      date
       price
       quantity
       items {
@@ -13,33 +14,18 @@ export const fetchOrdersQuery = gql`
           name
           image
           price
-          size
-          gender
-          category
-        }
-        selectedSize
-        quantity
-      }
-    }
-  }
-`
-
-export const fetchOrderQuery = gql`
-  query($orderId: ID!) {
-    order(orderId: $orderId) {
-      _id
-      price
-      quantity
-      items {
-        _id
-        product {
-          _id
-          name
-          image
-          price
-          size
-          gender
-          category
+          mainCategory {
+            _id
+            name
+          }
+          categories {
+            _id
+            name
+            parent {
+              _id
+              name
+            }
+          }
         }
         selectedSize
         quantity
@@ -49,8 +35,8 @@ export const fetchOrderQuery = gql`
 `
 
 export const createOrderMutation = gql`
-  mutation($token: String!) {
-    createOrder(token: $token) {
+  mutation {
+    createOrder {
       _id
     }
   }
