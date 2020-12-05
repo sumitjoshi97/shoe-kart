@@ -1,13 +1,11 @@
 import { useMemo } from 'react'
-import { useGlobalState } from '~store'
-import isEmpty from '~helpers/isEmpty'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { fetchOrdersQuery, createOrderMutation } from './queries'
+import useStores from '~hooks/useStores'
 
 const useOrder = () => {
-  const { state } = useGlobalState()
-
-  const isAuth = !isEmpty(state.userId)
+  const { authStore } = useStores()
+  const { isAuth } = authStore
 
   const { loading: ordersLoading, data: ordersData } = useQuery(
     fetchOrdersQuery,
@@ -23,18 +21,15 @@ const useOrder = () => {
 
   const orders = useMemo(() => {
     if (ordersData) {
-      return ordersData.data.orders
+      return ordersData.orders
     }
-    return {}
+    return []
   }, [ordersData])
 
-  const handleCreateOrder = (token: string) => {
-    console.log('@@token create order', token)
-    if (token) {
-      return createOrderMutationFun({
-        variables: { token },
-      })
-    }
+  const handleCreateOrder = () => {
+    createOrderMutationFun({
+      refetchQueries: [{ query: fetchOrdersQuery }],
+    })
   }
 
   return {
