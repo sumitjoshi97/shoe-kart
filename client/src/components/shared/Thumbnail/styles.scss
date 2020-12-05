@@ -1,0 +1,12 @@
+.thumbnail {
+  position: relative;
+  width: 16rem;
+  height: 16rem;
+  overflow: hidden;
+  &__img {
+    object-fit: contain;
+    width: 100%;
+    height: auto;
+    margin-top: -2.5rem;
+  }
+}
