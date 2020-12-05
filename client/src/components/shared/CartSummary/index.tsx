@@ -1,20 +1,24 @@
 import React from 'react'
-import Title from '../Title'
-import withCart from '~hocs/cart/withCart'
+
 import './styles.scss'
 
-const CartSummary: React.FC = (props: any) => {
+interface ICartSummaryProps {
+  cartPrice: number
+  cartSize: number
+}
+
+const CartSummary: React.FC<ICartSummaryProps> = ({ cartPrice, cartSize }) => {
   return (
     <div className="cart-summary">
-      <Title>summary</Title>
+      <h2 className="title-primary">summary</h2>
       <div className="cart-summary__sub-total">
         <div className="cart-summary__sub-total__title">
-          SubTotal <span>{`(${props.cart.quantity} items)`}</span>
+          SubTotal <span>{`(${cartSize} items)`}</span>
         </div>
-        <div className="cart-summary__sub-total__cost">{`$${props.cart.price}`}</div>
+        <div className="cart-summary__sub-total__cost">{`$${cartPrice}`}</div>
       </div>
     </div>
   )
 }
 
-export default withCart(CartSummary)
+export default CartSummary
