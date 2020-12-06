@@ -1,74 +1,110 @@
-import React from 'react'
-import {
-  CardNumberElement,
-  CardCvcElement,
-  CardExpiryElement,
-  useElements,
-  useStripe,
-} from '@stripe/react-stripe-js'
+import React, { useEffect } from 'react'
+
 import Button from '~components/shared/Button'
-import Title from '~components/shared/Title'
+import Dialog from '~components/shared/Dialog'
+import PaymentForm from './PaymentForm'
+import PaymentMethod from './PaymentMethod'
 
-const Payment: React.FC<any> = ({ clearCart, createOrder }) => {
-  const stripe = useStripe()
-  const elements = useElements()
-  const handlePaymentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+import usePayments from '~hooks/payment/usePayment'
+import usePaymentMethods from '~hooks/payment/usePaymentMethods'
+import isEmpty from '~helpers/isEmpty'
 
-    if (stripe && elements) {
-      const card = elements.getElement(CardNumberElement)
+export interface IPaymentProps {
+  activePaymentMethod: string
+  isCartEmpty: boolean
+  showDialog: boolean
+  clearCart: () => void
+  createOrder: () => void
+  toggleDialog: () => void
+  handleActivePaymentMethod: (paymentMethodId: string) => void
+}
 
-      if (card) {
-        const result = await stripe.createToken(card)
-        if (result.token !== undefined) {
-          createOrder(result.token.id)
-          clearCart()
-        }
-      }
+const Payment: React.FC<IPaymentProps> = ({
+  activePaymentMethod,
+  isCartEmpty,
+  showDialog,
+  clearCart,
+  createOrder,
+  handleActivePaymentMethod,
+  toggleDialog,
+}) => {
+  const { paymentMethods } = usePaymentMethods()
+  const {
+    createPaymentIntentForNewCard,
+    chargeUserFromSavedCard,
+    clientSecret,
+  } = usePayments()
+
+  useEffect(() => {
+    if (!isEmpty(paymentMethods)) {
+      handleActivePaymentMethod(paymentMethods[0].id)
     }
-    return
+  }, [paymentMethods])
+
+  const handleSuccessfulPayment = () => {
+    createOrder()
+    clearCart()
+  }
+
+  const handlePaymentWithSavedCard = () => {
+    chargeUserFromSavedCard()
+    handleSuccessfulPayment()
+  }
+
+  const handleShowPaymentForm = () => {
+    toggleDialog()
+  }
+
+  const renderPaymentMethods = () => {
+    if (!paymentMethods && isEmpty(paymentMethods)) return
+
+    return (
+      <>
+        <h3>Your credit and debit cards</h3>
+        {paymentMethods.map((paymentMethod: any) => (
+          <PaymentMethod
+            key={paymentMethod.id}
+            paymentMethodId={paymentMethod.id}
+            lastDigits={paymentMethod.card.lastDigits}
+            activePaymentMethod={activePaymentMethod}
+            handleActivePaymentMethod={handleActivePaymentMethod}
+          />
+        ))}
+        <Button
+          onClick={handlePaymentWithSavedCard}
+          styles={{ marginTop: '2rem' }}
+        >
+          Pay with Selected Card
+        </Button>
+      </>
+    )
+  }
+
+  const renderPaymentForm = () => {
+    return (
+      <Dialog>
+        <PaymentForm
+          clientSecret={clientSecret}
+          isCartEmpty={isCartEmpty}
+          createPaymentIntent={createPaymentIntentForNewCard}
+          handleSuccessfulPayment={handleSuccessfulPayment}
+        />
+      </Dialog>
+    )
   }
 
   return (
     <div className="payment">
-      <Title>payments</Title>
-      <h2>₹</h2>
-      <form
-        className="payment__form"
-        onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
-          handlePaymentSubmit(e)
-        }
-      >
-        <div className="payment__form__row">
-          <div className="input">
-            <CardNumberElement className="input__field" />
-            <label htmlFor="cardnumber" className="input__label">
-              Card number
-            </label>
-            <div className="input__baseline"></div>
-          </div>
-        </div>
+      {showDialog && renderPaymentForm()}
+      <h2>payment</h2>
+      <div className="payment__methods">{renderPaymentMethods()}</div>
+      <div className="payment__or">
+        or <div className="payment__or__divider"></div>
+      </div>
 
-        <div className="payment__form__row">
-          <div className="input half-width">
-            <CardExpiryElement className="input__field" />
-            <label htmlFor="card-expiry" className="input__label">
-              Expiry
-            </label>
-            <div className="input__baseline"></div>
-          </div>
-
-          <div className="input half-width">
-            <CardCvcElement className="input__field" />
-            <label htmlFor="card-cvc" className="input__label">
-              CVC
-            </label>
-            <div className="input__baseline"></div>
-          </div>
-        </div>
-
-        <Button type="submit">Pay</Button>
-      </form>
+      <Button color="white" onClick={handleShowPaymentForm}>
+        Pay with new Card
+      </Button>
     </div>
   )
 }
