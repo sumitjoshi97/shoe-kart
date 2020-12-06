@@ -1,0 +1,39 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
+
+.orders {
+  display: flex;
+  flex-direction: column;
+
+  &__list {
+    margin-top: 3.4rem;
+  }
+}
+
+.order {
+  border: $border;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  padding: 2rem 3.4rem;
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: $border-light;
+
+    @include respond(phone) {
+      flex-direction: column;
+    }
+    &__item {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 2rem;
+
+      span {
+        font-weight: 600;
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
