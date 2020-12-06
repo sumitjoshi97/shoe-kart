@@ -1,66 +1,127 @@
+@import "../../sass/mixins";
+@import "../../sass/variables";
+
 .checkout {
-  display: flex;
-  max-width: 1200px;
-  margin: auto;
-  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: 4fr 2fr;
+  grid-column-gap: 2rem;
+
+  @include respond(phone) {
+    grid-template-columns: 1fr;
+  }
+
   &__sections {
-    flex: 2;
+    &__order {
+      display: block;
+      margin-top: 2rem;
+      padding-bottom: 2rem;
+    }
   }
 
   &__summary {
-    padding-left: 2.4rem;
-    flex: 1;
+    @include respond(phone) {
+      display: none;
+    }
   }
-}
-
-.shipping {
-  &__data {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 1rem 2rem 0 0;
-  }
-  padding-bottom: 2rem;
-  border-bottom: 1px solid rgb(190, 190, 190);
 }
 
 .payment {
-  &__form {
-    &__row {
-      display: flex;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
 
-      .input {
-        position: relative;
-        width: 100%;
-        height: 48px;
+  &__methods {
+    margin-top: 2rem;
+    h3 {
+      margin-bottom: 1rem;
+    }
+  }
 
-        .StripeElement {
-          opacity: 0;
-          transition: opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-          will-change: opacity;
-        }
+  &__or {
+    display: flex;
+    flex-direction: row;
+    text-transform: uppercase;
+    align-items: center;
+    margin: 2rem 0;
+    &__divider {
+      height: 1.2px;
+      width: 100%;
+      background-color: rgba(#000, 0.4);
+      margin-left: 2rem;
+    }
+  }
+}
 
-        &__field.StripeElement--focus,
-        &__field:not(.StripeElement--empty) {
-          opacity: 1;
-        }
-        &__field.StripeElement--focus + &__label,
-        &__field:not(.StripeElement--empty) + &__label {
-          color: #666666;
-          transform: scale(0.75) translateY(0.4rem);
-          cursor: default;
-        }
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+  &__row {
+    display: flex;
+
+    .input {
+      position: relative;
+      width: 100%;
+      height: 48px;
+
+      .StripeElement {
+        opacity: 0;
+        transition: opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        will-change: opacity;
       }
-      .input__field.StripeElement--focus + .input__label,
-      .input__field:not(.StripeElement--empty) + .input__label {
+
+      &__field.StripeElement--focus,
+      &__field:not(.StripeElement--empty) {
+        opacity: 1;
+      }
+      &__field.StripeElement--focus + &__label,
+      &__field:not(.StripeElement--empty) + &__label {
         color: #666666;
         transform: scale(0.75) translateY(0.4rem);
         cursor: default;
       }
-      .half-width {
-        width: 50%;
+    }
+    .input__field.StripeElement--focus + .input__label,
+    .input__field:not(.StripeElement--empty) + .input__label {
+      color: #666666;
+      transform: scale(0.75) translateY(0.4rem);
+      cursor: default;
+    }
+    .half-width {
+      width: calc(50% - 1rem);
+      margin-right: 2rem;
+      &:last-child {
+        margin-right: 0;
       }
+    }
+  }
+  &__error {
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-align: center;
+    color: #ff5555;
+    margin-top: 1rem;
+  }
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 0.8rem;
+  &__select {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 100px;
+    border: 2px solid #000;
+    margin-right: 0.8rem;
+    &__inner {
+      display: inline-block;
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 100px;
     }
   }
 }

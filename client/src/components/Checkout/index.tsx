@@ -1,52 +1,105 @@
-import React from 'react'
-import Shipping from './Shipping'
-import CartSummary from '~components/shared/CartSummary'
-import './styles.scss'
-import CartItems from '~components/shared/CartItems'
-import Payment from './Payment'
+import React, { useState } from 'react'
+import { Link, Redirect } from 'react-router-dom'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
-import withCart from '~hocs/cart/withCart'
-import useOrder from '~hooks/order/useOrder'
-import EmptyCart from '../EmptyCart'
-import { Redirect } from 'react-router-dom'
 
-const Checkout: React.FC<any> = ({ cart, clearCart }) => {
-  const stripe = loadStripe(process.env.STRIPE_PUBLIC_KEY!)
+import Button from '~components/shared/Button'
+import CartSummary from '~components/shared/CartSummary'
+import Dialog from '~components/shared/Dialog'
+import Layout from '~components/Layout'
+import Loading from '~components/shared/Loading'
+import OrderItem from '~components/shared/OrderItem'
+import Payment from './Payment'
+import ShippingAddress from '~components/shared/ShippingAddress'
+
+import useAddress from '~hooks/address/useAddress'
+import useCart from '~hooks/cart/useCart'
+import useOrder from '~hooks/order/useOrder'
+import useStores from '~hooks/useStores'
+
+import { ICartItem } from '~interface'
+import isEmpty from '~helpers/isEmpty'
+import './styles.scss'
+
+const Checkout = () => {
+  const { authStore, uiStore } = useStores()
+  const { isAuth } = authStore
+  const {
+    activePaymentMethod,
+    showDialog,
+    toggleDialog,
+    handleActivePaymentMethod,
+  } = uiStore
+  const { cart, isCartLoading, clearCart } = useCart()
+  const { isAddressLoading } = useAddress()
   const { createOrder, createdOrderData, createOrderLoading } = useOrder()
 
+  const [stripe] = useState(() => loadStripe(process.env.STRIPE_PUBLIC_KEY!))
+
+  const renderOrderItems = () => {
+    if (cart && isEmpty(cart)) return
+
+    return cart.items.map((cartItem: ICartItem) => (
+      <OrderItem key={cartItem._id} orderItem={cartItem} />
+    ))
+  }
+
   const renderCheckout = () => {
-    if (cart.quantity === 0 && !createOrderLoading && createdOrderData) {
-      return <Redirect to={`/order/${createdOrderData.createOrder._id}/`} />
+    if (isAddressLoading || isCartLoading || !stripe) return <Loading />
+
+    if (!isAuth) {
+      return <Redirect to="/" />
+    }
+
+    if (cart.quantity === 0 && !!createdOrderData) {
+      return (
+        <Dialog>
+          order created successfully,
+          <Button>
+            <Link to="/user/orders">view orders</Link>
+          </Button>
+        </Dialog>
+      )
     }
 
     if (cart.quantity === 0) {
-      return <EmptyCart />
+      return <Redirect to="/cart" />
     }
 
     if (createOrderLoading) {
-      return <h1>Please wait while we are completing your payment</h1>
+      return <Dialog>Please wait while we are creating your order</Dialog>
     }
 
     return (
-      <>
+      <Elements stripe={stripe}>
         <div className="checkout__sections">
-          <Shipping />
-          <CartItems />
-          <Payment createOrder={createOrder} clearCart={clearCart} />
+          <ShippingAddress />
+          <div className="checkout__sections__order">
+            <h2>Order summary</h2>
+            {renderOrderItems()}
+          </div>
+          <Payment
+            isCartEmpty={!isEmpty(cart.items)}
+            createOrder={createOrder}
+            clearCart={clearCart}
+            showDialog={showDialog}
+            toggleDialog={toggleDialog}
+            activePaymentMethod={activePaymentMethod}
+            handleActivePaymentMethod={handleActivePaymentMethod}
+          />
         </div>
         <div className="checkout__summary">
-          <CartSummary />
+          <CartSummary cartSize={cart.quantity} cartPrice={cart.price} />
         </div>
-      </>
+      </Elements>
     )
   }
 
   return (
-    <div className="checkout">
-      <Elements stripe={stripe}>{renderCheckout()}</Elements>
-    </div>
+    <Layout medium>
+      <div className="checkout">{renderCheckout()}</div>
+    </Layout>
   )
 }
 
-export default withCart(Checkout)
+export default Checkout
