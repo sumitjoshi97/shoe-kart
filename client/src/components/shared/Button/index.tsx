@@ -1,11 +1,12 @@
 import React from 'react'
 import './styles.scss'
 
-interface IButtonProps {
+export interface IButtonProps {
   type?: 'button' | 'submit' | undefined
   color?: string
   styles?: { [key: string]: number | string }
   className?: string
+  disabled?: boolean
   onClick?: (arg: any) => any
 }
 
@@ -21,7 +22,6 @@ const Button: React.FC<IButtonProps> = ({
     ...styles,
     backgroundColor: color === 'white' ? '#fff' : '#000',
     color: color === 'white' ? '#000' : '#fff',
-    border: color === 'white' ? 'none' : 'border: 1.2px solid #000',
   }
   return (
     <button
@@ -42,4 +42,5 @@ Button.defaultProps = {
   type: 'button',
   color: 'black',
   className: '',
+  disabled: false,
 }
