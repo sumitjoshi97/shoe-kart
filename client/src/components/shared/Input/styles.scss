@@ -3,7 +3,7 @@
   position: relative;
   filter: none;
   height: 4.8rem;
-
+  margin-top: 4px;
   &__field {
     position: absolute;
     width: 100%;
@@ -17,9 +17,11 @@
 
   &__label {
     position: absolute;
-    color: #666666;
+    color: #5a5a5a;
     top: 0;
     left: 0;
+    font-weight: 500;
+
     pointer-events: none;
     transform-origin: left;
     transform: translateY(2rem) scale(1);
@@ -28,7 +30,12 @@
   }
 
   &__field:focus + &__label {
-    transform: scale(0.75) translateY(0.4rem);
+    transform: scale(0.8) translateY(0.4rem);
+  }
+
+  &__field:disabled {
+    background-color: transparent;
+    cursor: not-allowed;
   }
 
   &__baseline {
