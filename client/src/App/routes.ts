@@ -10,6 +10,10 @@ export default [
     path: '/product/:productId',
   },
   {
+    component: lazy(() => import('../components/Profile')),
+    path: '/user/profile',
+  },
+  {
     component: lazy(() => import('../components/Cart')),
     path: '/cart',
   },
@@ -19,7 +23,7 @@ export default [
   },
   {
     component: lazy(() => import('../components/Orders')),
-    path: '/orders',
+    path: '/user/orders',
   },
   {
     component: lazy(() => import('../components/Home')),
