@@ -1,37 +1,35 @@
 import { useState, useEffect } from 'react'
-import { useGlobalState, useGlobalDispatch } from '~store'
 import { useMutation } from '@apollo/react-hooks'
+
+import useStores from '~hooks/useStores'
 import { loginUserMutation, signupUserMutation } from './queries'
 
-import isEmpty from '~helpers/isEmpty'
-
-export const formTypes = {
+export const authTypes = {
   LOGIN: 'LOGIN',
   SIGNUP: 'SIGNUP',
 }
 
 const useAuth = () => {
-  const { state } = useGlobalState()
-  const { dispatch } = useGlobalDispatch()
+  const { authStore } = useStores()
+  const { addUser, isAuth } = authStore
+  const [authType, setAuthType] = useState(authTypes.LOGIN)
 
-  const [formType, setFormType] = useState(formTypes.LOGIN)
+  const [
+    loginUserMutationFun,
+    { loading: isLoginUserLoading, data: loginData },
+  ] = useMutation(loginUserMutation)
 
-  const [loginUserMutationFun, { loading: isLoginUserLoading, data: loginData }] = useMutation(
-    loginUserMutation,
-  )
-
-  const [signupUserMutationFun, { loading: isSignupUserLoading, data: signupData }] = useMutation(
-    signupUserMutation,
-  )
-
+  const [
+    signupUserMutationFun,
+    { loading: isSignupUserLoading, data: signupData },
+  ] = useMutation(signupUserMutation)
 
   useEffect(() => {
-    if (isEmpty(state.userId) && (loginData || signupData)) {
-      dispatch({
-        type: 'ADD_USER',
-        user: loginData.login.user._id || signupData.signup.user._id,
-        token: loginData.login.token || signupData.signup.token,
-      })
+    if (!isAuth && (loginData || signupData)) {
+      const userId = loginData.login.user._id || signupData.signup.user._id
+      const accessToken = loginData.login.token || signupData.signup.token
+
+      addUser(userId, accessToken)
     }
   }, [loginData, signupData])
 
@@ -44,28 +42,29 @@ const useAuth = () => {
     })
   }
 
-  const handleSignupUser = (email: string, password: string, name: string) {
+  const handleSignupUser = (email: string, password: string, name: string) => {
     signupUserMutationFun({
       variables: {
         email,
         password,
-        name
-      }
+        name,
+      },
     })
   }
 
-  
   return {
     loginOrSignupUser: (email: string, password: string, name?: string) => {
-      if (formType === formTypes.LOGIN) {
+      if (authType === authTypes.LOGIN) {
         return handleLoginUser(email, password)
       }
-      if (formType === formTypes.SIGNUP) {
+      if (authType === authTypes.SIGNUP) {
         return handleSignupUser(email, password, name!)
       }
     },
-    formType,
-    setFormType
+    authType,
+    isLoginUserLoading,
+    isSignupUserLoading,
+    setAuthType,
   }
 }
 
