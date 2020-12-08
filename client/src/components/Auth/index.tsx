@@ -1,102 +1,72 @@
-import React, { useState, useEffect } from 'react'
-import { useMutation } from 'react-apollo'
-import * as queries from './queries'
-import Input from '../shared/Input'
-import './styles.scss'
-import { IFormInput } from './interface'
-import { useGlobalDispatch } from '~store'
+import React, { useState } from 'react'
+
 import Button from '~components/shared/Button'
 import Dialog from '~components/shared/Dialog'
-import Title from '~components/shared/Title'
+import Input from '~components/shared/Input'
 
-const Auth: React.FC = () => {
-  const formTypes = {
-    login: 'login',
-    signup: 'signup',
-  }
+import useAuth, { authTypes } from '~hooks/auth/useAuth'
+import './styles.scss'
 
-  const formInputState: IFormInput = {
+export interface IAuthInput {
+  name: string
+  email: string
+  password: string
+  [key: string]: string | undefined
+}
+
+const Auth = () => {
+  const authInputState: IAuthInput = {
     name: '',
     email: '',
     password: '',
   }
+  const [authInput, setAuthInput] = useState<IAuthInput>(authInputState)
 
-  const [formType, setFormType] = useState<string>(formTypes.login)
-  const [formInput, setFormInput] = useState<IFormInput>(formInputState)
-  const { dispatch } = useGlobalDispatch()
+  const { authType, setAuthType, loginOrSignupUser } = useAuth()
 
-  const mutation =
-    formType === formTypes.login ? queries.loginUser : queries.signupUser
-  const [signupOrLogin, { data }] = useMutation(mutation)
-
-  const handleFormType = () => {
-    formType === formTypes.login
-      ? setFormType(formTypes.signup)
-      : setFormType(formTypes.login)
-  }
-
-  const handleFormInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAuthInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormInput({ ...formInput, [name]: value })
+    setAuthInput({ ...authInput, [name]: value })
   }
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAuthSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const mutationVariables =
-      formType === formTypes.login
-        ? { email: formInput.email, password: formInput.password }
-        : {
-            email: formInput.email,
-            password: formInput.password,
-            name: formInput.name,
-          }
-    signupOrLogin({ variables: mutationVariables })
-    setFormInput(formInputState)
+    loginOrSignupUser(authInput.email, authInput.password, authInput.name)
   }
-
-  useEffect(() => {
-    if (data) {
-      dispatch({
-        type: 'ADD_USER',
-        user: data.login.user._id,
-        token: data.login.token,
-      })
-    }
-  }, [data])
 
   return (
     <Dialog>
       <div className="auth">
-        <Title>{formType}</Title>
+        <h2>{authType}</h2>
         <form
           className="auth__form"
           onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
-            handleFormSubmit(e)
+            handleAuthSubmit(e)
           }
           autoComplete="off"
         >
-          {formType === formTypes.signup ? (
+          {authType === authTypes.SIGNUP ? (
             <Input
               type="text"
               label="name"
               name="name"
-              inputValue={formInput['name']}
-              handleInput={handleFormInput}
+              inputValue={authInput['name']}
+              handleInput={handleAuthInput}
             />
           ) : null}
           <Input
             type="email"
             label="email"
             name="email"
-            inputValue={formInput['email']}
-            handleInput={handleFormInput}
+            inputValue={authInput['email']}
+            handleInput={handleAuthInput}
           />
           <Input
             type="password"
             label="password"
             name="password"
-            inputValue={formInput['password']}
-            handleInput={handleFormInput}
+            inputValue={authInput['password']}
+            handleInput={handleAuthInput}
           />
           <Button
             styles={{
@@ -106,17 +76,23 @@ const Auth: React.FC = () => {
             }}
             type="submit"
           >
-            {formType}
+            {authType}
           </Button>
         </form>
         <div className="auth__footer">
-          {formType === formTypes.login ? (
+          {authType === authTypes.LOGIN ? (
             <div>
-              New to Shopkart?<span onClick={handleFormType}>Join here</span>
+              New to Shopkart?
+              <span onClick={() => setAuthType(authTypes.SIGNUP)}>
+                Join here
+              </span>
             </div>
           ) : (
             <div>
-              Already a Member?<span onClick={handleFormType}>Login now</span>
+              Already a Member?
+              <span onClick={() => setAuthType(authTypes.LOGIN)}>
+                Login now
+              </span>
             </div>
           )}
         </div>

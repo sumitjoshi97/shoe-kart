@@ -1,18 +1,22 @@
 import React, { useState } from 'react'
 import { FiUser } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
-import { useGlobalDispatch, useGlobalState } from '~store'
-import isEmpty from '~helpers/isEmpty'
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
+
 import Button from '~components/shared/Button'
 
-const AccountDropdown: React.FC<any> = props => {
-  const { state } = useGlobalState()
-  const { dispatch } = useGlobalDispatch()
+import useStores from '~hooks/useStores'
+
+export interface IAccountDropdownProps extends RouteComponentProps {}
+
+const AccountDropdown: React.FC<IAccountDropdownProps> = props => {
+  const { authStore, uiStore } = useStores()
+  const { isAuth, removeUser } = authStore
+  const { toggleDialog } = uiStore
   const [showAccountOptions, setShowAccountOptions] = useState<boolean>(false)
 
   const handleLogout = () => {
-    dispatch({ type: 'REMOVE_USER' })
-    props.handleLogout()
+    removeUser()
+    props.history.push('/')
   }
 
   const accountDropdownOptions = (
@@ -20,9 +24,6 @@ const AccountDropdown: React.FC<any> = props => {
       <ul className="account-dropdown__options__list">
         <li className="account-dropdown__options__list__option">
           <Link to="/user/orders">orders</Link>
-        </li>
-        <li className="account-dropdown__options__list__option">
-          <Link to="/user/favorites">favorites</Link>
         </li>
         <li className="account-dropdown__options__list__option">
           <Link to="/user/profile">profile</Link>
@@ -36,7 +37,7 @@ const AccountDropdown: React.FC<any> = props => {
 
   return (
     <>
-      {!isEmpty(state.userId) ? (
+      {isAuth ? (
         <div
           className="account-dropdown"
           onMouseEnter={() => setShowAccountOptions(true)}
@@ -47,12 +48,10 @@ const AccountDropdown: React.FC<any> = props => {
           {showAccountOptions && accountDropdownOptions}
         </div>
       ) : (
-        <Button onClick={() => dispatch({ type: 'TOGGLE_DIALOG' })}>
-          Login
-        </Button>
+        <Button onClick={toggleDialog}>Login</Button>
       )}
     </>
   )
 }
 
-export default AccountDropdown
+export default withRouter(AccountDropdown)
