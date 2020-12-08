@@ -3,9 +3,6 @@ import gql from 'graphql-tag'
 export const fetchAddressQuery = gql`
   query {
     userInfo {
-      user {
-        name
-      }
       address {
         street
         locality

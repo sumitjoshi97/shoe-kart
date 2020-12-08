@@ -1,20 +1,21 @@
 import { useMemo } from 'react'
-import { useGlobalState } from '~store'
-import isEmpty from '~helpers/isEmpty'
 import { useQuery, useMutation } from '@apollo/react-hooks'
+
+import { IShippingAddress } from '~/interface'
+import useStores from '~hooks/useStores'
+
 import {
   fetchAddressQuery,
   updateAddressMutation,
   addAddressMutation,
 } from './queries'
-import { IShippingAddress } from '../../components/Checkout/interface'
-const useAddress = () => {
-  const { state } = useGlobalState()
 
-  const isAuth = !isEmpty(state.userId)
+const useAddress = () => {
+  const { authStore } = useStores()
+  const { isAuth } = authStore
 
   const {
-    loading: addressLoading,
+    loading: isAddressLoading,
     data: addressData,
   } = useQuery(fetchAddressQuery, { skip: !isAuth })
 
@@ -51,7 +52,7 @@ const useAddress = () => {
     address,
     addUserAddress: handleAddUserAddress,
     updateUserAddress: handleUpdateUserAddress,
-    addressLoading,
+    isAddressLoading,
     addAddressLoading,
     updateAddressLoading,
   }
