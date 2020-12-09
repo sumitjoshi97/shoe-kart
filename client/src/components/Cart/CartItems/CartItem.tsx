@@ -60,7 +60,7 @@ const CartItem: React.FC<ICartItemProps> = props => {
         <div className="cart-item__info__header">
           <h3 className="title-secondary">{product.name}</h3>
           <h4 className="title-tertiary">
-            {`${gender?.name} ${product.main_category.name} shoe`}
+            {`${gender?.name} ${product.mainCategory.name} shoe`}
           </h4>
         </div>
         <div className="cart-item__info__dropdown">

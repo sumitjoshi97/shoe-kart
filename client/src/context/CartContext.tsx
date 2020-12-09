@@ -45,7 +45,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
   }
 
   const addItemToLocalCart = (product: IProduct, selectedSize: string) => {
-    const { _id, name, image, price, main_category, categories } = product
+    const { _id, name, image, price, mainCategory, categories } = product
     const cartItem = {
       _id: uuid(),
       product: {
@@ -53,7 +53,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
         name,
         image,
         price,
-        main_category,
+        mainCategory,
         categories,
       },
       quantity: 1,
