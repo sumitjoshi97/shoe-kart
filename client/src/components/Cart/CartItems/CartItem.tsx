@@ -5,7 +5,7 @@ import Button from '~components/shared/Button'
 import Dropdown from '~components/shared/Dropdown'
 import Thumbnail from '~components/shared/Thumbnail'
 
-import { ICartItem, ICategory, IDropdownOption } from '~interface'
+import { ICartItem, ICategory } from '~interface'
 
 export interface ICartItemProps {
   cartItem: ICartItem
@@ -18,7 +18,7 @@ export interface ICartItemProps {
 }
 
 const defaultQuantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(quantity => {
-  return { _id: quantity, name: quantity }
+  return { _id: quantity.toString(), name: quantity.toString() }
 })
 
 const updateTypes = {
@@ -41,13 +41,14 @@ const CartItem: React.FC<ICartItemProps> = props => {
     (category: ICategory) => category.parent?.name === 'gender',
   )
 
-  const handleDropdown = (updateType: string, updateValue: IDropdownOption) => {
-    const updatedQuantity = Number(
-      updateType === updateTypes.QUANTITY ? updateValue._id : quantity,
-    )
-    const updatedSelectedSize =
-      updateType === updateTypes.SIZE ? updateValue._id : selectedSize
-    updateCartItem(cartItemId, updatedQuantity, updatedSelectedSize)
+  const handleDropdown = (updateType: string, updateValue: string) => {
+    if (updateType === updateTypes.QUANTITY)
+      return updateCartItem(cartItemId, parseInt(updateValue), selectedSize)
+
+    if (updateType === updateTypes.SIZE)
+      return updateCartItem(cartItemId, quantity, updateValue)
+
+    return
   }
 
   return (
@@ -77,7 +78,7 @@ const CartItem: React.FC<ICartItemProps> = props => {
             <span>quantity</span>
             <Dropdown
               type={updateTypes.QUANTITY}
-              current={quantity}
+              current={quantity.toString()}
               options={defaultQuantities}
               handleDropdown={handleDropdown}
             />

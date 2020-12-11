@@ -63,7 +63,7 @@ export const CartProvider: React.FC<React.ReactNode> = ({ children }) => {
     const updatedCart = {
       ...localCart,
       quantity: localCart.quantity + 1,
-      price: localCart.price + parseInt(price),
+      price: localCart.price + price,
       items: { ...localCart.items, [cartItem._id]: cartItem },
     }
     setLocalStorageCart(updatedCart)

@@ -1,17 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
-import { ICategory, IDropdownOption } from '~interface'
+
+import { IDropdownOption } from '~interface'
 import './styles.scss'
 
 export interface IDropdownProps {
-  current: string | number
+  current: string
   type: string
-  value: number
-  options: ICategory[] | IDropdownOption[]
-  handleDropdown: (
-    updateType: string,
-    updateValue: IDropdownOption | ICategory,
-  ) => void
+  options: IDropdownOption[]
+  handleDropdown: (updateType: string, updateValue: string) => void
 }
 
 const Dropdown: React.FC<IDropdownProps> = props => {
@@ -40,16 +37,13 @@ const Dropdown: React.FC<IDropdownProps> = props => {
     }
   }, [dropdownRef])
 
-  const handleDropdownOption = (
-    type: string,
-    option: ICategory | IDropdownOption,
-  ) => {
+  const handleDropdownOption = (type: string, option: string) => {
     props.handleDropdown(type, option)
     setShowDropdown(false)
   }
 
   const currentValue = props.options.find(
-    (option: ICategory | IDropdownOption) => option._id === props.current,
+    (option: IDropdownOption) => option._id === props.current,
   )
 
   return (
@@ -65,11 +59,11 @@ const Dropdown: React.FC<IDropdownProps> = props => {
       {showDropdown && (
         <ul className="dropdown__list">
           {props.options &&
-            props.options.map((option: ICategory | IDropdownOption) => (
+            props.options.map((option: IDropdownOption) => (
               <li
                 className="dropdown__list__option"
                 key={option._id}
-                onClick={() => handleDropdownOption(props.type, option)}
+                onClick={() => handleDropdownOption(props.type, option._id)}
               >
                 {option.name}
               </li>

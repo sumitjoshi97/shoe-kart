@@ -49,7 +49,7 @@ export interface ILocalCart {
 
 export interface IDropdownOption {
   _id: string
-  name: number
+  name: string
 }
 
 export interface IShippingAddress {
